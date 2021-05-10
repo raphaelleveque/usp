@@ -31,9 +31,8 @@ int main()
 
     switch (contador)
     {
+
     case 1: 
-        if ((div11 & !div13 & !div19) | (div13 & !div11 & !div19) | (div19 & !div11 & !div13))
-        {
             if (div11){
                 printf("BaBa");
             }
@@ -42,16 +41,13 @@ int main()
                 printf("BaDum");
             }
             
-            else if (div19){
+            else{
                 printf("BaTss");
             }  
-        }
         break;
 
 
     case 2:
-        if ( (div11 & div13 & !div19) | (div11 & div19 & !div13) | (div13 & div19 & !div11) )
-        {
             if(div11 & div13){
                 printf("BaDumDum");
             }
@@ -59,11 +55,9 @@ int main()
             else if(div11 & div19){
                 printf("BaDumTss");
             }
-            else if(div13 & div19){
+            else{
                 printf("DumDumTss");
             }
-
-        }
         break;
 
 
@@ -77,6 +71,6 @@ int main()
         break;
     }
 
+
     return 0;
-    
 }
