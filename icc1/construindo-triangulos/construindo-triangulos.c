@@ -7,13 +7,13 @@ int main()
 
     scanf("%d %c", &altura, &caractere);
 
-    if (altura > 25)
+    if (altura > 25 || altura <= 0)
     {
         printf("Altura invalida\n");
     }
     else 
     {
-        for (int i = 0; i < altura; i++)
+        for (int i = 0; i < altura + i; i++)
         {
             for (int i = 0; i < (altura - 1); i++)
             {
@@ -34,18 +34,3 @@ int main()
     return 0;
 }
 
-
-
-/*
-printf("%*s", altura-1, "");
-            printf("%*s", numero_caracteres, caractere);
-            printf("\n");
-            numero_caracteres += i;
-
-*/
-
-/*
-
- a
-
-*/
