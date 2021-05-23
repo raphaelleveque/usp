@@ -7,7 +7,7 @@ int main()
 
     for (int i = 0; i < 49; i++)
     {
-        scanf("%c", &ordem_teclas[i]);
+        scanf(" %c", &ordem_teclas[i]);
         switch (ordem_teclas[i])
         {
         case '_':
@@ -17,7 +17,6 @@ int main()
             caracteres_especiais[1] = i;
             break;
         }
-        getchar();
     }
     int tamanho;
     scanf("%d", &tamanho);
@@ -26,7 +25,6 @@ int main()
     for (int i = 0; i < tamanho; i++)
     {
         scanf("%d", &mensagem[i]);
-        getchar();
     }
     
  
