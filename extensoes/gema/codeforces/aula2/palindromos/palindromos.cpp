@@ -13,20 +13,17 @@ int main()
         cin >> palindromo[i];
     }
     
-
-
+    
+    int j = n - 1;
     if (n % 2 == 0)
     {
         for (int i = 0; i < n/2; i++)
         {
-            for (int j = n; j > n/2; j--)
+            if (palindromo[i] != palindromo[j])
             {
-                if (palindromo[i] != palindromo[j])
-                {
-                    soma++;
-                }
-                
+                soma++;
             }
+            j--;  
             
         }
     }
@@ -34,15 +31,11 @@ int main()
     {
         for (int i = 0; i < (n-1)/2; i++)
         {
-            for (int j = n-1; j > (n-1)/2; j--)
+            if (palindromo[i] != palindromo[j])
             {
-                if (palindromo[i] != palindromo[j])
-                {
-                    soma++;
-                }
-                
+                soma++;
             }
-            
+            j--;
         }
     }
     cout << soma;
