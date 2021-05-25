@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int frequencia[1005];
-
+// int frequencia[1005]  -> Ao declarar antes da main, ela inicia zerada, sem nenhum lixo
 int main()
 {
     int n;
+    int frequencia[1005] = {}; // Ao colocar as chaves, eliminamos o lixo de memória do C
+
     cin >> n;
 
     for (int i = 0; i < n; i++)
