@@ -1,24 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
-/*int valores_matriz (int matriz[][], int l, int c)
-{
-    for (int i = 0; i < l; i++)
-    {
-        for (int j = 0; j < c; j++)
-        {
-            matriz[i][j] = rand()%50 - 25;
-        }
-    }
-    return matriz[l][c];
-}
-*/
-int matrizc[1000][1000];
-int matriza[1000][1000], matrizb[1000][1000];
-
 
 int main()
 {
     int semente, la, ca, lb, cb;
+    int matrizc[100][100];
     scanf("%d %d", &la, &ca);
     scanf("%d %d", &lb, &cb);
     if (ca != lb)
@@ -28,6 +14,7 @@ int main()
     }
     scanf("%d", &semente);
     srand(semente);
+    int matriza[la][ca], matrizb[lb][cb];
     for (int i = 0; i < la; i++)
     {
         for (int j = 0; j < ca; j++)
