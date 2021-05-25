@@ -4,17 +4,27 @@
 int main()
 {
     int semente, la, ca, lb, cb;
-    int matrizc[100][100];
     scanf("%d %d", &la, &ca);
     scanf("%d %d", &lb, &cb);
+
+    if (la <= 0 || lb <= 0 || cb <= 0 ||  ca <= 0 )
+    {
+        printf("Valores invalidos para a multiplicacao.\n");
+        return 0;
+    }
+    
+    
+
     if (ca != lb)
     {
-        printf("Valores invalidos para a multiplicacao .\n");
+        printf("Valores invalidos para a multiplicacao.\n");
         return 0;
     }
     scanf("%d", &semente);
     srand(semente);
     int matriza[la][ca], matrizb[lb][cb];
+
+
     for (int i = 0; i < la; i++)
     {
         for (int j = 0; j < ca; j++)
@@ -29,13 +39,17 @@ int main()
             matrizb[i][j] = rand()%50 - 25;
         }  
     }
+
+    int matrizc[la][cb];
+
     for (int i = 0; i < la; i++)
     {
         for (int j = 0; j < cb; j++)
         {
-            for (int k = 0, h = 0; k < ca, h < lb; k++, h++)
+            matrizc[i][j] = 0;
+            for (int k = 0; k < ca; k++)
             {
-                matrizc[i][j] += matriza[i][k] * matrizb[h][j];
+                matrizc[i][j] += matriza[i][k] * matrizb[k][j];
             }  
         }      
     }
