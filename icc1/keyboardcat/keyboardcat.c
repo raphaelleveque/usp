@@ -24,7 +24,7 @@ int main()
 
     for (int i = 0; i < tamanho; i++)
     {
-        scanf("%d", &mensagem[i]);
+        scanf("%d", mensagem[i]);
     }
     
  
