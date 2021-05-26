@@ -15,8 +15,8 @@ int main()
             cin >> x;
             if (x == 0)
             {
-                zero[1] = i;
-                zero[2] = j;
+                zero[0] = i;
+                zero[1] = j;
             }
             
             matriz[i][j] = x;
