@@ -6,7 +6,7 @@ int main()
     int linhas, colunas;
     cin >> linhas >> colunas;
     int matriz[linhas][colunas];
-    bool padrao[colunas] = {true};
+    vector<bool> padrao(colunas, true);
 
     for (int i = 0; i < linhas; i++)
     {
@@ -18,29 +18,29 @@ int main()
         }
     }
     
-    for (int i = 1; i < colunas; i++)
+    for (int i = 1; i <= colunas; i++)
     {
         for (int j = 1; j < linhas; j++)
         {
-            if (matriz[i-1][1] > matriz[i-1][0])
+            if (matriz[1][i-1] > matriz[0][i-1])
             {
-                if (matriz[i][j] < matriz[i-1][j-1])
+                if (matriz[j][i-1] <= matriz[j-1][i-1])
                 {
                     padrao[i-1] = false;
                     break;
                 }
             }
-            if (matriz[i-1][1] < matriz[i-1][0])
+            else if (matriz[1][i-1] < matriz[0][i-1])
             {
-                if (matriz[i][j] > matriz[i-1][j-1])
+                if (matriz[j][i-1] >= matriz[j-1][i-1])
                 {
                     padrao[i-1] = false;
                     break;
                 }
             }
-            if (matriz[i-1][1] == matriz[i-1][0])
+            else if (matriz[1][i-1] == matriz[0][i-1])
             {
-                if (matriz[i][j] != matriz[i-1][j-1])
+                if (matriz[j][i-1] != matriz[j-1][i-1])
                 {
                     padrao[i-1] = false;
                     break;
@@ -54,7 +54,7 @@ int main()
     
     for (int i = 0; i < colunas; i++)
     {
-        if (padrao[colunas] == true)
+        if (padrao[i] == true)
         {
             cout << "S" << endl;
         }
