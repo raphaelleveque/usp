@@ -37,22 +37,22 @@ int main()
     {
         if(s[i+2] == 'C')
         {
-            int j = ((int)s[i] - 48) * 10 + ((int)s[i+1] - 48) - 1;
+            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;
             c[j]++;
         }
         else if(s[i+2] == 'E')
         {
-            int j = ((int)s[i] - 48) * 10 + ((int)s[i+1] - 48) - 1;
+            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;
             e[j]++;
         }
         else if(s[i+2] == 'U')
         {
-            int j = ((int)s[i] - 48) * 10 + ((int)s[i+1] - 48) - 1;
+            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;
             u[j]++;
         }
         else
         {
-            int j = ((int)s[i] - 48) * 10 + ((int)s[i+1] - 48) - 1;
+            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;
             p[j]++;
         }
         
