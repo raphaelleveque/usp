@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 void testando_baralho(int *a)
@@ -6,7 +7,7 @@ void testando_baralho(int *a)
     int contador = 0;
     for (int i = 0; i < 13; i++)
     {
-        if (a[i] == 2)
+        if (a[i] >= 2)  // Adicionado um maior que
         {
             printf("erro\n");
             return;
@@ -28,16 +29,15 @@ void testando_baralho(int *a)
 
 int main()
 {
-    char s[55] = {};
-
+    string s;  // Usar string é melhor que usar vetor de char
     cin >> s;
 
     int c[13] = {}, e[13] = {}, u[13] = {}, p[13] = {};
-    for (int i = 0; i < 54; i+=3)
+    for (int i = 0; i < s.size(); i+=3)
     {
         if(s[i+2] == 'C')
         {
-            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;
+            int j = (s[i] - '0') * 10 + (s[i+1] - '0') - 1;  // Como s[i] é um char que representa o número 1, ao usar s[i] - '0', ele se torna o número 1
             c[j]++;
         }
         else if(s[i+2] == 'E')
