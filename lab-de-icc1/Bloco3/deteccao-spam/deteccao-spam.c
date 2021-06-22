@@ -14,16 +14,15 @@ int main()
     char caractere[9] = {};
     int i = 0, spam = 0, contador_caractere = 0, limite_caracteres = 0;;
 
-    scanf("%*[^\r\n]s"); // Ignora tudo até o final da linha
-    scanf("%*[\r\n]s"); // Ignora o pula linha  
     while ((caractere[i] = getchar()) != EOF)
     {
-        if (contador_caractere > 76)
+        if(caractere[i] == '\n')
         {
-            limite_caracteres = 1;
-            return 0;
+            contador_caractere = 0;
+            limpando_vetor(caractere);
+            i = 0;
+            continue;
         }
-        
 
         if (!((caractere[i] >= 'a' && caractere[i] <= 'z') || (caractere[i] >= 'A' && caractere[i] <= 'Z')))
         {
@@ -32,7 +31,15 @@ int main()
             limpando_vetor(caractere);
             continue;
         }
+        else
+        {
+            contador_caractere++;
+        }
         
+        if (contador_caractere > 76)
+        {
+            limite_caracteres = 1;
+        }
 
         if (!strcmp(caractere, "gratuito"))
         {
@@ -119,19 +126,12 @@ int main()
             continue;            
         }   
 
-        if(caractere[i] != '\n')
-        {
-            contador_caractere++;
-        }
-        else
-        {
-            contador_caractere = 0;
-        }
         
         i++;
         if (i == 9)
         {
             i = 0;
+            limpando_vetor(caractere);
         }
         
     }
@@ -145,7 +145,6 @@ int main()
         printf("Spam\n");
         return 0;
     }
-    
     else
     {
         printf("Inbox\n");
