@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void calculo_terra(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4]);
-void calculo_jupiter(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4]);
-void calculo_venus(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4]);
-void calculo_mercurio(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4]);
-
+void calculo_tempo(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4], int *dia);
 
 int main()
 {
@@ -30,19 +26,23 @@ int main()
 
     if(!strcmp(planeta, "Terra"))
     {
-        calculo_terra(&tempo, planeta, tempo_decrescente);
+        int dia = 86400;
+        calculo_tempo(&tempo, planeta, tempo_decrescente, &dia);
     }
     else if (!strcmp(planeta, "Jupiter"))
     {
-        calculo_jupiter(&tempo, planeta, tempo_decrescente);
+        int dia = 35760;
+        calculo_tempo(&tempo, planeta, tempo_decrescente, &dia);
     }
     else if (!strcmp(planeta, "Venus"))
     {
-        calculo_venus(&tempo, planeta, tempo_decrescente);
+        int dia = 20995200;
+        calculo_tempo(&tempo, planeta, tempo_decrescente, &dia);
     }
     else if (!strcmp(planeta, "Mercurio"))
     {
-        calculo_mercurio(&tempo, planeta, tempo_decrescente);
+        int dia = 5068800;
+        calculo_tempo(&tempo, planeta, tempo_decrescente, &dia);
     }
 
     printf("%llu segundos no planeta %s equivalem a:\n", tempo, planeta);
@@ -55,13 +55,13 @@ int main()
 
 
 
-void calculo_terra(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4])
+void calculo_tempo(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4], int *dia)
 {
     unsigned long long int tempo_total = *tempo;
-    if (*tempo >= 86400)
+    if (*tempo >= *dia)
     {
-        tempo_decrescente[0] = (*tempo - (*tempo % 86400)) / 86400;
-        *tempo = *tempo % 86400;
+        tempo_decrescente[0] = (*tempo - (*tempo % *dia)) / *dia;
+        *tempo = *tempo % *dia;
     }
     if (*tempo >= 3600)
     {
@@ -79,86 +79,3 @@ void calculo_terra(unsigned long long int *tempo, char planeta[9], unsigned long
     }
     *tempo = tempo_total;
 }
-
-
-
-void calculo_jupiter(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4])
-{
-    unsigned long long int tempo_total = *tempo;
-    if (*tempo >= 35760)
-    {
-        tempo_decrescente[0] = (*tempo - (*tempo % 35760)) / 35760;
-        *tempo = *tempo % 35760;
-    }
-    if (*tempo >= 3600)
-    {
-        tempo_decrescente[1] = (*tempo - (*tempo % 3600)) / 3600;
-        *tempo = *tempo % 3600;
-    }
-    if (*tempo >= 60)
-    {
-        tempo_decrescente[2] = (*tempo - (*tempo % 60)) / 60;
-        *tempo = *tempo % 60;
-    }
-    if (*tempo >= 1)
-    {
-        tempo_decrescente[3] = *tempo;
-    }
-    *tempo = tempo_total;
-}
-
-
-
-void calculo_venus(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4])
-{
-    unsigned long long int tempo_total = *tempo;
-    if (*tempo >= 20995200)
-    {
-        tempo_decrescente[0] = (*tempo - (*tempo % 20995200)) / 20995200;
-        *tempo = *tempo % 20995200;
-    }
-    if (*tempo >= 3600)
-    {
-        tempo_decrescente[1] = (*tempo - (*tempo % 3600)) / 3600;
-        *tempo = *tempo % 3600;
-    }
-    if (*tempo >= 60)
-    {
-        tempo_decrescente[2] = (*tempo - (*tempo % 60)) / 60;
-        *tempo = *tempo % 60;
-    }
-    if (*tempo >= 1)
-    {
-        tempo_decrescente[3] = *tempo;
-    }
-    *tempo = tempo_total;
-}
-
-
-
-void calculo_mercurio(unsigned long long int *tempo, char planeta[9], unsigned long long int tempo_decrescente[4])
-{
-    unsigned long long int tempo_total = *tempo;
-    if (*tempo >= 5068800)
-    {
-        tempo_decrescente[0] = (*tempo - (*tempo % 5068800)) / 5068800;
-        *tempo = *tempo % 5068800;
-    }
-    if (*tempo >= 3600)
-    {
-        tempo_decrescente[1] = (*tempo - (*tempo % 3600)) / 3600;
-        *tempo = *tempo % 3600;
-    }
-    if (*tempo >= 60)
-    {
-        tempo_decrescente[2] = (*tempo - (*tempo % 60)) / 60;
-        *tempo = *tempo % 60;
-    }
-    if (*tempo >= 1)
-    {
-        tempo_decrescente[3] = *tempo;
-    }
-    *tempo = tempo_total;
-}
-
-
