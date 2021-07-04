@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+enum comandos
+{
+    Adicionar = 1,
+    Listar = 2,
+    Avancar = 3,
+    Retroceder = 4
+};
+
 
 typedef struct musica
 {
@@ -34,7 +42,7 @@ int main()
     do
     {
         scanf("%d", &comando);
-        if (comando == 1)
+        if (comando == Adicionar)
         {
             if (playlist1.numeroMusicas == 15)
             {
@@ -44,13 +52,13 @@ int main()
             
             preencherPlaylist(&playlist1);
             printf("Musica %s de %s adicionada com sucesso.\n", playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].nome,
-                                                               playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].artista);
+                                                                playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].artista);
             if (playlist1.musicaAtual == NULL)
             {
                 playlist1.musicaAtual = &playlist1.conjuntoMusicas[0];
             }
         }
-        else if (comando == 2)
+        else if (comando == Listar)
         {
             printf("---- Playlist: %s ----\n", playlist1.nome);
             printf("Total de musicas: %d\n\n", playlist1.numeroMusicas);
@@ -66,11 +74,11 @@ int main()
                 printf("Duracao: %d segundos\n\n", playlist1.conjuntoMusicas[i].tempo);
             }
         }
-        else if (comando == 3)
+        else if (comando == Avancar)
         {
             playlist1.musicaAtual += 1;
         }
-        else if (comando == 4)
+        else if (comando == Retroceder)
         {
             playlist1.musicaAtual -= 1;
         }
@@ -99,7 +107,7 @@ char * lerLinha()
     scanf("%*[\n\r]s");
     char *musicasOuPlaylists = malloc(sizeof(char));
     int caracteres = 0;
-    int nmr_max_char = 1;
+    int nmrMaxChar = 1;
     do
     {
         scanf("%c", &musicasOuPlaylists[caracteres]);
@@ -108,10 +116,10 @@ char * lerLinha()
             musicasOuPlaylists[caracteres] = '\0';
         }
         caracteres++;
-        if (caracteres == nmr_max_char)
+        if (caracteres == nmrMaxChar)
         {
-            nmr_max_char *= 2;
-            musicasOuPlaylists = realloc(musicasOuPlaylists, (nmr_max_char) * sizeof(char));
+            nmrMaxChar *= 2;
+            musicasOuPlaylists = realloc(musicasOuPlaylists, (nmrMaxChar) * sizeof(char));
         }
 
     }while (musicasOuPlaylists[caracteres-1] != '\0');
