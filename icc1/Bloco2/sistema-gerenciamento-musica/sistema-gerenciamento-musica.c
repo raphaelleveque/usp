@@ -14,6 +14,7 @@ typedef struct playlist
     char * nome;
     int numeroMusicas;
     Musica conjuntoMusicas[15];
+    Musica * musicaAtual;
 } Playlist;
 
 
@@ -26,39 +27,65 @@ int main()
 {
     Playlist playlist1;
     playlist1.numeroMusicas = 0;
+    playlist1.musicaAtual = NULL;
     playlist1.nome = lerLinha();
 
     int comando;
-    int i = 0;
     do
     {
         scanf("%d", &comando);
-        fflush(stdin);
         if (comando == 1)
         {
+            if (playlist1.numeroMusicas == 15)
+            {
+                printf("Playlist cheia!\n");
+                continue;
+            }
+            
             preencherPlaylist(&playlist1);
-            printf("Musica %s adicionada com sucesso .", playlist1.conjuntoMusicas->nome);
-            i++;
+            printf("Musica %s de %s adicionada com sucesso.\n", playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].nome,
+                                                               playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].artista);
+            if (playlist1.musicaAtual == NULL)
+            {
+                playlist1.musicaAtual = &playlist1.conjuntoMusicas[0];
+            }
         }
         else if (comando == 2)
         {
-            printf("Conjunto de Musicas\n");
+            printf("---- Playlist: %s ----\n", playlist1.nome);
+            printf("Total de musicas: %d\n\n", playlist1.numeroMusicas);
+
+            for (int i = 0; i < playlist1.numeroMusicas; i++)
+            {
+                if (playlist1.musicaAtual == &playlist1.conjuntoMusicas[i])
+                {
+                    printf("=== NOW PLAYING ===\n");
+                }
+                printf("(%d). '%s'\n", i + 1, playlist1.conjuntoMusicas[i].nome);
+                printf("Artista: %s\n", playlist1.conjuntoMusicas[i].artista);
+                printf("Duracao: %d segundos\n\n", playlist1.conjuntoMusicas[i].tempo);
+            }
         }
-        else if (comando == 5)
+        else if (comando == 3)
         {
+            playlist1.musicaAtual += 1;
+        }
+        else if (comando == 4)
+        {
+            playlist1.musicaAtual -= 1;
+        }
+        else
+        {
+            free(playlist1.nome);
+            for (int i = 0; i < playlist1.numeroMusicas; ++i)
+            {
+                free(playlist1.conjuntoMusicas[i].artista);
+                free(playlist1.conjuntoMusicas[i].nome);                
+            }
             break;
         }
         
-        
     } while (comando != 5);
-    
-    i = 0;
-
-    printf("%s\n", playlist1.nome);
-    printf("%s\n", playlist1.conjuntoMusicas[i].nome);
-    printf("%s\n", playlist1.conjuntoMusicas[i].artista);
-    printf("%d", playlist1.conjuntoMusicas[i].tempo);
-
 
 
 
@@ -69,6 +96,7 @@ int main()
 
 char * lerLinha()
 {
+    scanf("%*[\n\r]s");
     char *musicasOuPlaylists = malloc(sizeof(char));
     int caracteres = 0;
     int nmr_max_char = 1;
@@ -99,7 +127,7 @@ void preencherPlaylist(Playlist *playlist1)
 {
     playlist1->conjuntoMusicas[playlist1->numeroMusicas].nome = lerLinha();
     playlist1->conjuntoMusicas[playlist1->numeroMusicas].artista = lerLinha();
-    scanf("%d", playlist1->conjuntoMusicas[playlist1->numeroMusicas].tempo);
+    scanf("%d", &playlist1->conjuntoMusicas[playlist1->numeroMusicas].tempo);
 
     playlist1->numeroMusicas++;
 }
