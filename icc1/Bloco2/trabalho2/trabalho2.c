@@ -14,7 +14,7 @@ typedef struct matrizes
 
 void lerMatriz(Matrizes * matrizOriginal);
 void copiandoMatriz(Matrizes * matriz1, Matrizes matriz2);
-void calculoGeracoes(Matrizes * matrizOriginal, char metricaVizinhanca);
+void calculoGeracoes(Matrizes * matrizOriginal, Matrizes * matrizCopia, char metricaVizinhanca);
 int checagemVizinhanca(int linha, int coluna, Matrizes matriz, char metricaVizinhanca);
 
 
@@ -33,9 +33,7 @@ int main()
     }
 
     char metricaVizinhanca;
-    scanf("%*[\r\n]s");
-    scanf("%c", &metricaVizinhanca);
-    scanf("%*[\r\n]s");
+    scanf(" %c", &metricaVizinhanca);
 
     if (metricaVizinhanca != 'M' && metricaVizinhanca != 'N')
     {
@@ -51,12 +49,39 @@ int main()
     }
     lerMatriz(&matrizOriginal);
 
+    Matrizes matrizCopia;
+
+    matrizCopia.linhas = matrizOriginal.linhas;
+    matrizCopia.colunas = matrizOriginal.colunas;
+
+    matrizCopia.matriz = malloc(matrizCopia.linhas * sizeof(char *));
+    for (int i = 0; i < matrizCopia.linhas; i++)
+    {
+        matrizCopia.matriz[i] = malloc(matrizCopia.colunas * sizeof(char));
+    }
+
 
     for (int i = 0; i < numeroGeracoes; i++)
     {
-        calculoGeracoes(&matrizOriginal, metricaVizinhanca);
+        calculoGeracoes(&matrizOriginal, &matrizCopia, metricaVizinhanca);
     }
     
+    for (int i = 0; i < matrizOriginal.linhas; i++)
+    {
+        for (int j = 0; j < matrizOriginal.colunas; j++)
+        {
+            printf("%c", matrizOriginal.matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (int i = 0; i < matrizOriginal.linhas; i++)
+    {
+        free(matrizOriginal.matriz[i]);
+        free(matrizCopia.matriz[i]);
+    }
+    free(matrizOriginal.matriz);
+    free(matrizCopia.matriz);
     
 
     return 0;
@@ -64,13 +89,13 @@ int main()
 
 void lerMatriz(Matrizes * matrizOriginal)
 {
+    scanf("%*[\r\n]s");
     for (int i = 0; i < matrizOriginal->linhas; i++)
     {
         for (int j = 0; j < matrizOriginal->colunas; j++)
         {
-            matrizOriginal->matriz[i][j] = getchar();
+            scanf(" %c", &matrizOriginal->matriz[i][j]);
         }
-        scanf("%*[\r\n]s");
     }
 }
 
@@ -85,14 +110,13 @@ void copiandoMatriz(Matrizes * matriz1, Matrizes matriz2)
     }
 }
 
-void calculoGeracoes(Matrizes * matrizOriginal, char metricaVizinhanca)
+void calculoGeracoes(Matrizes * matrizOriginal, Matrizes * matrizCopia, char metricaVizinhanca)
 {
-    Matrizes matrizCopia;
-    copiandoMatriz(&matrizCopia, * matrizOriginal);
+    copiandoMatriz(matrizCopia, * matrizOriginal);
 
-    for (int i = 0; i < matrizCopia.linhas; i++)
+    for (int i = 0; i < matrizCopia->linhas; i++)
     {
-        for (int j = 0; j < matrizCopia.colunas; j++)
+        for (int j = 0; j < matrizCopia->colunas; j++)
         {
             int vizinhos = checagemVizinhanca(i, j, * matrizOriginal, metricaVizinhanca);
 
@@ -100,23 +124,23 @@ void calculoGeracoes(Matrizes * matrizOriginal, char metricaVizinhanca)
             {
                 if (vizinhos == 3)
                 {
-                    matrizCopia.matriz[i][j] = CELULA_VIVA;
+                    matrizCopia->matriz[i][j] = CELULA_VIVA;
                 }
             }
             else if (matrizOriginal->matriz[i][j] == CELULA_VIVA)
             {
                 if (vizinhos < 2)
                 {
-                    matrizCopia.matriz[i][j] = CELULA_MORTA;
+                    matrizCopia->matriz[i][j] = CELULA_MORTA;
                 }
                 else if (vizinhos > 3)
                 {
-                    matrizCopia.matriz[i][j] = CELULA_MORTA;
+                    matrizCopia->matriz[i][j] = CELULA_MORTA;
                 }
             }
         }
     }
-    copiandoMatriz(matrizOriginal, matrizCopia);
+    copiandoMatriz(matrizOriginal, * matrizCopia);
 }
 
 int checagemVizinhanca(int linhaAtual, int colunaAtual, Matrizes matriz, char metricaVizinhanca)
@@ -140,17 +164,18 @@ int checagemVizinhanca(int linhaAtual, int colunaAtual, Matrizes matriz, char me
             {
                 numeroCelulasVivas++;
             }
-            if (matriz.matriz[(totalLinhas + linhaAtual - 1) % totalLinhas][(totalColunas + colunaAtual - 1 + i) % totalColunas] 
-            == CELULA_VIVA)
-            {
-                numeroCelulasVivas++;
-            }
-            if (matriz.matriz[(totalLinhas + linhaAtual + 1) % totalLinhas][(totalColunas + colunaAtual - 1 + i) % totalColunas] 
-            == CELULA_VIVA)
-            {
-                numeroCelulasVivas++;
-            }
         }
+            if (matriz.matriz[(totalLinhas + linhaAtual - 1) % totalLinhas][colunaAtual] 
+            == CELULA_VIVA)
+            {
+                numeroCelulasVivas++;
+            }
+            if (matriz.matriz[(totalLinhas + linhaAtual + 1) % totalLinhas][colunaAtual] 
+            == CELULA_VIVA)
+            {
+                numeroCelulasVivas++;
+            }
+
         return numeroCelulasVivas;
     }
     else
