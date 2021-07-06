@@ -4,6 +4,8 @@
 
 #define CELULA_MORTA '.'
 #define CELULA_VIVA 'x'
+#define MOORE 'M'
+#define NEUMANN 'N'
 
 typedef struct matrizes
 {
@@ -35,7 +37,7 @@ int main()
     char metricaVizinhanca;
     scanf(" %c", &metricaVizinhanca);
 
-    if (metricaVizinhanca != 'M' && metricaVizinhanca != 'N')
+    if (metricaVizinhanca != MOORE && metricaVizinhanca != NEUMANN)
     {
         printf("Dados de entrada apresentam erro.\n");
         return 0;
@@ -150,31 +152,30 @@ int checagemVizinhanca(int linhaAtual, int colunaAtual, Matrizes matriz, char me
     int totalLinhas = matriz.linhas;
     int totalColunas = matriz.colunas;
 
-    if (metricaVizinhanca == 'M')
+    if (metricaVizinhanca == MOORE)
     {
         for (int i = 0; i < 3; i++)
         {
-            if (matriz.matriz[(totalLinhas + linhaAtual - 1 + i) % totalLinhas][(totalColunas + colunaAtual - 1) % totalColunas]
-            == CELULA_VIVA)
+            if (matriz.matriz[(totalLinhas + linhaAtual - 1 + i) % totalLinhas]
+              [(totalColunas + colunaAtual - 1) % totalColunas] == CELULA_VIVA)
             {
                 numeroCelulasVivas++;
             }
-            if (matriz.matriz[(totalLinhas + linhaAtual - 1 + i) % totalLinhas][(totalColunas + colunaAtual + 1) % totalColunas] 
-            == CELULA_VIVA)
+            if (matriz.matriz[(totalLinhas + linhaAtual - 1 + i) % totalLinhas]
+              [(totalColunas + colunaAtual + 1) % totalColunas] == CELULA_VIVA)
             {
                 numeroCelulasVivas++;
             }
         }
-            if (matriz.matriz[(totalLinhas + linhaAtual - 1) % totalLinhas][colunaAtual] 
-            == CELULA_VIVA)
-            {
-                numeroCelulasVivas++;
-            }
-            if (matriz.matriz[(totalLinhas + linhaAtual + 1) % totalLinhas][colunaAtual] 
-            == CELULA_VIVA)
-            {
-                numeroCelulasVivas++;
-            }
+        
+        if (matriz.matriz[(totalLinhas + linhaAtual - 1) % totalLinhas][colunaAtual] == CELULA_VIVA)
+        {
+            numeroCelulasVivas++;
+        }
+        if (matriz.matriz[(totalLinhas + linhaAtual + 1) % totalLinhas][colunaAtual] == CELULA_VIVA)
+        {
+            numeroCelulasVivas++;
+        }
 
         return numeroCelulasVivas;
     }
@@ -202,4 +203,3 @@ int checagemVizinhanca(int linhaAtual, int colunaAtual, Matrizes matriz, char me
         return numeroCelulasVivas;
     }
 }
-
