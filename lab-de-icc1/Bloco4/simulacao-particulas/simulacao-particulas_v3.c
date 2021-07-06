@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include<unistd.h>
 
 #define AMARELO "\033[0;33m"
 #define VERMELHO "\033[0;31m"
@@ -14,15 +14,6 @@ void imprimeMatriz();
 void troca(char *a, char *b);
 void calculoFisica();
 
-
-void msleep(long msec){
-    struct timespec ts;
-
-    ts.tv_sec = msec / 1000;
-    ts.tv_nsec = (msec % 1000) * 1000000;
-
-    nanosleep(&ts, &ts);
-}
 
 
 int main()
@@ -48,11 +39,13 @@ int main()
         // uma partícula.
         while (contadorFrames < frame) 
         {
-            system("clear && printf '\e[3J'");
+            printf("\e[2J"); // clear
+	        printf("\e[?25l"); // hide cursor
             printf("frame: %d\n", contadorFrames + 1);
             imprimeMatriz();
             calculoFisica();
-            msleep(50);
+            usleep(50000);
+
             contadorFrames++;
         }
 
