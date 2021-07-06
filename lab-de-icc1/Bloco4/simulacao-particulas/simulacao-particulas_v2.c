@@ -1,7 +1,13 @@
 #include <stdio.h>
-#include <time.h>
+#include <stdlib.h>
+#include<unistd.h>
 
-char matriz[32][64];
+#define AMARELO "\033[0;33m"
+#define VERMELHO "\033[0;31m"
+#define AZUL "\033[0;34m"
+#define RESET "\033[0m"
+
+char matriz[34][66];
 
 void corrigindoMatriz();
 void imprimeMatriz();
@@ -9,14 +15,6 @@ void troca(char *a, char *b);
 void calculoFisica();
 
 
-void msleep(long msec){
-    struct timespec ts;
-
-    ts.tv_sec = msec / 1000;
-    ts.tv_nsec = (msec % 1000) * 1000000;
-
-    nanosleep(&ts, &ts);
-}
 
 int main()
 {
@@ -30,6 +28,7 @@ int main()
     while (contadorFrames < quantidadeFrames)
     {
         int nLido = scanf(" %d: %d %d %c", &frame, &x, &y, &novaParticula);
+        x++, y++;
 
         if (nLido == EOF) 
         {
@@ -40,11 +39,13 @@ int main()
         // uma partícula.
         while (contadorFrames < frame) 
         {
-            system("clear && printf '\e[3J'");
+            printf("\e[2J"); // clear
+	        printf("\e[?25l"); // hide cursor
             printf("frame: %d\n", contadorFrames + 1);
             imprimeMatriz();
             calculoFisica();
-            msleep(150);
+            usleep(50000);
+
             contadorFrames++;
         }
 
@@ -54,6 +55,7 @@ int main()
             matriz[y][x] = novaParticula;
         }
     }
+    printf("\e[?25h");
     return 0;
 }
 
@@ -61,11 +63,18 @@ int main()
 
 void corrigindoMatriz()
 {
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 34; i++)
     {
-        for (int j = 0; j < 64; j++)
+        for (int j = 0; j < 66; j++)
         {
-            matriz[i][j] = ' ';
+            if (i == 0 || i == 33 || j == 0 || j == 65)
+            {
+                matriz[i][j] = '@';
+            }
+            else
+            {
+                matriz[i][j] = ' ';
+            }
         }
     }
 }
@@ -73,11 +82,23 @@ void corrigindoMatriz()
 
 void imprimeMatriz()
 {
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 34; i++)
     {
-        for (int j = 0; j < 64; j++)
+        for (int j = 0; j < 66; j++)
         {
-            printf("%c", matriz[i][j]);
+            switch(matriz[i][j]){
+				case '~':
+					printf("%s~%s", AZUL, RESET);					
+					break;
+				case '#':
+					printf("%s#%s", AMARELO, RESET);
+					break;
+                case '@':
+                    printf("%s@%s", VERMELHO, RESET);
+                    break;
+				default:
+					printf("%c", matriz[i][j]);
+			}
         }
         printf("\n");
     }
@@ -96,24 +117,24 @@ void troca(char *a, char *b)
 
 void calculoFisica()
 {
-    char matrizCopia[32][64];
-    for (int i = 0; i < 32; i++)
+    char matrizCopia[34][66];
+    for (int i = 0; i < 34; i++)
     {
-        for (int j = 0; j < 64; j++)
+        for (int j = 0; j < 66; j++)
         {
             matrizCopia[i][j] = matriz[i][j];
         }
     } 
 
-    for (int i = 0; i < 32; i++)
+    for (int i = 1; i < 33; i++)
     {
-        for (int j = 0; j < 64; j++)
+        for (int j = 1; j < 65; j++)
         {
-            char comparador1 = i == 31 ? '@' : matriz[i + 1][j];
-            char comparador2 = (i == 31 || j == 0) ? '@' : matriz[i + 1][j - 1];
-            char comparador3 = (i == 31 || j == 63) ? '@' : matriz[i + 1][j + 1];
-            char comparador4 = j == 0 ? '@' : matriz[i][j - 1];
-            char comparador5 = j == 63 ? '@' : matriz[i][j + 1];
+            char comparador1 = i == 32 ? '@' : matriz[i + 1][j];
+            char comparador2 = (i == 32 || j == 1) ? '@' : matriz[i + 1][j - 1];
+            char comparador3 = (i == 32 || j == 64) ? '@' : matriz[i + 1][j + 1];
+            char comparador4 = j == 1 ? '@' : matriz[i][j - 1];
+            char comparador5 = j == 64 ? '@' : matriz[i][j + 1];
 
             if (matriz[i][j] == '#')
             {
@@ -159,9 +180,9 @@ void calculoFisica()
         
     }
 
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 34; i++)
     {
-        for (int j = 0; j < 64; j++)
+        for (int j = 0; j < 66; j++)
         {
             matriz[i][j] = matrizCopia[i][j];
         }
