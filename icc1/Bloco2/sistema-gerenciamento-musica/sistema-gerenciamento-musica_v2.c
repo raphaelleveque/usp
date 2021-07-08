@@ -9,27 +9,23 @@ enum comandos
     Retroceder = 4
 };
 
-
 typedef struct musica
 {
-    char * nome;
-    char * artista;
+    char *nome;
+    char *artista;
     int tempo;
 } Musica;
 
 typedef struct playlist
 {
-    char * nome;
+    char *nome;
     int numeroMusicas;
-    Musica * conjuntoMusicas;
-    Musica * musicaAtual;
+    Musica *conjuntoMusicas;
+    Musica *musicaAtual;
 } Playlist;
 
-
-
-char * lerLinha();
+char *lerLinha();
 void preencherPlaylist(Playlist *playlist1);
-
 
 int main()
 {
@@ -37,6 +33,7 @@ int main()
     playlist1.numeroMusicas = 0;
     playlist1.musicaAtual = NULL;
     playlist1.conjuntoMusicas = NULL;
+
     playlist1.nome = lerLinha();
 
     int comando;
@@ -50,35 +47,21 @@ int main()
                 printf("Playlist cheia!\n");
                 continue;
             }
-            
-            playlist1.numeroMusicas++;
-            
-            if (playlist1.musicaAtual == NULL)
-            {
-                playlist1.musicaAtual = &playlist1.conjuntoMusicas[0];
-            }
 
-            if (playlist1.conjuntoMusicas == NULL)
+            playlist1.numeroMusicas++;
+
+            int i;
+            for (i = 0; i < playlist1.numeroMusicas; i++)
             {
-                playlist1.conjuntoMusicas = malloc(sizeof(Musica));
-            }
-            else
-            {
-                int i;
-                for (i = 0; i < playlist1.numeroMusicas; i++)
+                if (playlist1.musicaAtual == &playlist1.conjuntoMusicas[i])
                 {
-                    if (playlist1.musicaAtual == &playlist1.conjuntoMusicas[i])
-                    {
-                        break;
-                    }
+                    break;
                 }
-                playlist1.conjuntoMusicas = realloc(playlist1.conjuntoMusicas, playlist1.numeroMusicas * sizeof(Musica));
             }
-            
-            
+            playlist1.conjuntoMusicas = realloc(playlist1.conjuntoMusicas, playlist1.numeroMusicas * sizeof(Musica));
+            playlist1.musicaAtual = &playlist1.conjuntoMusicas[i];
+
             preencherPlaylist(&playlist1);
-            printf("Musica %s de %s adicionada com sucesso.\n", playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].nome,
-                                                                playlist1.conjuntoMusicas[playlist1.numeroMusicas - 1].artista);
         }
         else if (comando == Listar)
         {
@@ -110,21 +93,18 @@ int main()
             for (int i = 0; i < playlist1.numeroMusicas; ++i)
             {
                 free(playlist1.conjuntoMusicas[i].artista);
-                free(playlist1.conjuntoMusicas[i].nome);                
+                free(playlist1.conjuntoMusicas[i].nome);
             }
+            free(playlist1.conjuntoMusicas);
             break;
         }
-        
+
     } while (comando != 5);
-
-
 
     return 0;
 }
 
-
-
-char * lerLinha()
+char *lerLinha()
 {
     scanf("%*[\n\r]s");
     char *musicasOuPlaylists = malloc(sizeof(char));
@@ -144,18 +124,18 @@ char * lerLinha()
             musicasOuPlaylists = realloc(musicasOuPlaylists, (nmrMaxChar) * sizeof(char));
         }
 
-    }while (musicasOuPlaylists[caracteres-1] != '\0');
+    } while (musicasOuPlaylists[caracteres - 1] != '\0');
 
     musicasOuPlaylists = realloc(musicasOuPlaylists, (caracteres + 1) * sizeof(char));
 
     return musicasOuPlaylists;
 }
 
-
-
 void preencherPlaylist(Playlist *playlist1)
 {
-    playlist1->conjuntoMusicas[playlist1->numeroMusicas].nome = lerLinha();
-    playlist1->conjuntoMusicas[playlist1->numeroMusicas].artista = lerLinha();
-    scanf("%d", &playlist1->conjuntoMusicas[playlist1->numeroMusicas].tempo);
+    playlist1->conjuntoMusicas[playlist1->numeroMusicas - 1].nome = lerLinha();
+    playlist1->conjuntoMusicas[playlist1->numeroMusicas - 1].artista = lerLinha();
+    scanf("%d", &playlist1->conjuntoMusicas[playlist1->numeroMusicas - 1].tempo);
+    printf("Musica %s de %s adicionada com sucesso.\n", playlist1->conjuntoMusicas[playlist1->numeroMusicas - 1].nome,
+           playlist1->conjuntoMusicas[playlist1->numeroMusicas - 1].artista);
 }
