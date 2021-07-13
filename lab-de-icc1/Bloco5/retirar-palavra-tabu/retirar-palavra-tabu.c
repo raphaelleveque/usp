@@ -22,7 +22,7 @@ int main()
     phrase = realloc(phrase, (numberOfChars + 2) * sizeof(char));
     phrase[numberOfChars] = '\0';
 
-    char *findTabooWord = malloc((numberOfChars + 1) * sizeof(char));
+    char *findTabooWord;
 
     int tabooCounter = 0;
     do
@@ -42,16 +42,14 @@ int main()
         strncpy(newPhrase, phrase, i);
         strcat(newPhrase, &phrase[i + sizeOfTabooWord]);
 
-        strcpy(phrase, newPhrase);
-
-        free(newPhrase);
+        free(phrase);
+        phrase = newPhrase;
     } while (1);
 
     printf("A palavra tabu foi encontrada %d vezes\n", tabooCounter);
     printf("Frase: %s", phrase);
 
     free(phrase);
-    free(findTabooWord);
 
     return 0;
 }

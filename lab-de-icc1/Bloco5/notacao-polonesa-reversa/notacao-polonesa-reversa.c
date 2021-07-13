@@ -4,8 +4,8 @@
 int main()
 {
     char numberOrOperator;
-    double *stack = malloc(2 * sizeof(double));
-    double *stackPointer;
+    double *stack = malloc(sizeof(double));
+    double *stackPointer = NULL;
     int stackSize = 0;
     
     while ((numberOrOperator = getchar()) != EOF)
@@ -15,10 +15,7 @@ int main()
             ungetc(numberOrOperator, stdin);
             scanf("%lf", &stack[stackSize]);
             stackSize++;
-            if (stackSize % 2 == 1)
-            {
-                stack = realloc(stack, (stackSize * 2 + 1) * sizeof(double));
-            }
+            stack = realloc(stack, (stackSize + 1) * sizeof(double));
             stackPointer = &stack[stackSize];
         }
         else if (numberOrOperator == ' ' );
@@ -29,7 +26,6 @@ int main()
                 stackPointer -= 2;
                 *stackPointer = *stackPointer + *(stackPointer + 1);
                 stackPointer ++;
-                stack = realloc(stack, stackSize * sizeof(double));
                 stackSize--;
             }
             else if (numberOrOperator == '-')
@@ -37,7 +33,6 @@ int main()
                 stackPointer -= 2;
                 *stackPointer = *stackPointer - *(stackPointer + 1);
                 stackPointer ++;
-                stack = realloc(stack, stackSize * sizeof(double));
                 stackSize--;
             }
             else if (numberOrOperator == '*')
@@ -45,7 +40,6 @@ int main()
                 stackPointer -= 2;
                 *stackPointer = *stackPointer * *(stackPointer + 1);
                 stackPointer ++;
-                stack = realloc(stack, stackSize * sizeof(double));
                 stackSize--;
             }
             else if (numberOrOperator == '/')
@@ -53,7 +47,6 @@ int main()
                 stackPointer -= 2;
                 *stackPointer = *stackPointer / *(stackPointer + 1);
                 stackPointer ++;
-                stack = realloc(stack, stackSize * sizeof(double));
                 stackSize--;
             }
 
@@ -61,7 +54,9 @@ int main()
         
         
     }
-    printf("Resultado: %.6lf", stack[stackSize - 1]);
+    printf("Resultado: %.6lf\n", stack[0]);
+
+    free(stack);
 
     return 0;
 }
