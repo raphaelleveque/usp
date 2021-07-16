@@ -4,55 +4,52 @@
 int main()
 {
     char numberOrOperator;
-    double *stack = malloc(sizeof(double));
+    double *stack = NULL;
     double *stackPointer = NULL;
     int stackSize = 0;
-    
+
     while ((numberOrOperator = getchar()) != EOF)
     {
         if (numberOrOperator >= '0' && numberOrOperator <= '9')
         {
-            ungetc(numberOrOperator, stdin);
-            scanf("%lf", &stack[stackSize]);
             stackSize++;
-            stack = realloc(stack, (stackSize + 1) * sizeof(double));
-            stackPointer = &stack[stackSize];
+            stack = realloc(stack, stackSize * sizeof(double));
+            stackPointer = &stack[stackSize - 1];
+            ungetc(numberOrOperator, stdin);
+            scanf("%lf", stackPointer);
         }
-        else if (numberOrOperator == ' ' );
-        else
+        else if (numberOrOperator == '+')
         {
-            if (numberOrOperator == '+')
-            {
-                stackPointer -= 2;
-                *stackPointer = *stackPointer + *(stackPointer + 1);
-                stackPointer ++;
-                stackSize--;
-            }
-            else if (numberOrOperator == '-')
-            {
-                stackPointer -= 2;
-                *stackPointer = *stackPointer - *(stackPointer + 1);
-                stackPointer ++;
-                stackSize--;
-            }
-            else if (numberOrOperator == '*')
-            {
-                stackPointer -= 2;
-                *stackPointer = *stackPointer * *(stackPointer + 1);
-                stackPointer ++;
-                stackSize--;
-            }
-            else if (numberOrOperator == '/')
-            {
-                stackPointer -= 2;
-                *stackPointer = *stackPointer / *(stackPointer + 1);
-                stackPointer ++;
-                stackSize--;
-            }
-
+            stackPointer--;
+            *stackPointer = *stackPointer + *(stackPointer + 1);
+            stackSize--;
+            stack = realloc(stack, stackSize * sizeof(double));
+            stackPointer = &stack[stackSize - 1];
         }
-        
-        
+        else if (numberOrOperator == '-')
+        {
+            stackPointer--;
+            *stackPointer = *stackPointer - *(stackPointer + 1);
+            stackSize--;
+            stack = realloc(stack, stackSize * sizeof(double));
+            stackPointer = &stack[stackSize - 1];
+        }
+        else if (numberOrOperator == '*')
+        {
+            stackPointer--;
+            *stackPointer = *stackPointer * *(stackPointer + 1);
+            stackSize--;
+            stack = realloc(stack, stackSize * sizeof(double));
+            stackPointer = &stack[stackSize - 1];
+        }
+        else if (numberOrOperator == '/')
+        {
+            stackPointer--;
+            *stackPointer = *stackPointer / *(stackPointer + 1);
+            stackSize--;
+            stack = realloc(stack, stackSize * sizeof(double));
+            stackPointer = &stack[stackSize - 1];
+        }
     }
     printf("Resultado: %.6lf\n", stack[0]);
 
