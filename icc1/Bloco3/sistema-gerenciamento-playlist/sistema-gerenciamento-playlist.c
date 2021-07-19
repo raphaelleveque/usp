@@ -118,6 +118,8 @@ int main()
 
     } while (comando != 7);
 
+    free(playlist);
+
     return 0;
 }
 
