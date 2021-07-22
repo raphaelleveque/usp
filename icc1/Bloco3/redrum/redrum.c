@@ -1,3 +1,4 @@
+// Raphael Leveque 12542522
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -12,14 +13,12 @@ int main()
     int caracteres = 0;
     char *frase = lerLinha(&caracteres);
 
-    bool palindromoSimOuNao, palindromoDireto = true;
-    palindromoSimOuNao = palindromoOuNao(caracteres, frase, &palindromoDireto);
+    bool palindromo, palindromoDireto = true;
+    palindromo = palindromoOuNao(caracteres, frase, &palindromoDireto);
 
-    if (!palindromoSimOuNao)
+    if (!palindromo)
     {
         printf("Nao eh um palindromo\n");
-        free(frase);
-        return 0;
     }
     else if (palindromoDireto)
     {
