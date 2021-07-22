@@ -12,28 +12,29 @@ int main()
     int caracteres = 0;
     char *frase = lerLinha(&caracteres);
 
-    bool palindromoSimOuNao, palindromoDireto = false;
-    char *fraseDeVerificacao = malloc((caracteres + 1) * sizeof(char));    
-    strcpy(fraseDeVerificacao, frase);
-    palindromoSimOuNao = palindromoOuNao(caracteres, fraseDeVerificacao, &palindromoDireto);
+    bool palindromoSimOuNao, palindromoDireto = true;
+    palindromoSimOuNao = palindromoOuNao(caracteres, frase, &palindromoDireto);
 
     if (!palindromoSimOuNao)
     {
         printf("Nao eh um palindromo\n");
+        free(frase);
         return 0;
     }
     else if (palindromoDireto)
     {
-        printf("Palindromo Direto\n");
+        printf("Palindromo direto\n");
     }
     else
     {
-        printf("Palindromo Indireto\n");
+        printf("Palindromo indireto\n");
     }
-    
+    free(frase);
+
     return 0;
 }
 
+// Lê o conteúdo da Linha e ignora os caracteres especiais, com excessão de alguns
 char *lerLinha(int *caracteres)
 {
     scanf("%*[\n\r]s");
@@ -42,6 +43,7 @@ char *lerLinha(int *caracteres)
     do
     {
         scanf("%c", &frase[*caracteres]);
+        frase[*caracteres] = tolower(frase[*caracteres]);
 
         bool caracteresEspeciais = (frase[*caracteres] == '/' || frase[*caracteres] == ' ' || frase[*caracteres] == '\n');
 
@@ -49,7 +51,7 @@ char *lerLinha(int *caracteres)
         {
             continue;
         }
-        
+
         if (frase[*caracteres] == '\n' || frase[*caracteres] == EOF)
         {
             frase[*caracteres] = '\0';
@@ -63,11 +65,11 @@ char *lerLinha(int *caracteres)
 
     } while (frase[*caracteres - 1] != '\0');
 
-    frase = realloc(frase, (*caracteres + 1) * sizeof(char));
+    frase = realloc(frase, (*caracteres) * sizeof(char));
+    (*caracteres)--;
 
     return frase;
 }
-
 
 bool palindromoOuNao(int caracteres, char *frase, bool *palindromoDireto)
 {
@@ -76,13 +78,22 @@ bool palindromoOuNao(int caracteres, char *frase, bool *palindromoDireto)
         return true;
     }
 
-    if(!(isalnum(frase[0]) || isalnum(frase[caracteres - 1])))
+    // Verifica se é palíndromo direto ou indireto
+    if (!(isalnum(frase[0])) || !(isalnum(frase[caracteres - 1])))
     {
         *palindromoDireto = (frase[0] == frase[caracteres - 1]);
         if (!(*palindromoDireto))
         {
-            caracteres = isalnum(frase[0]) ? caracteres : caracteres + 1;
-            caracteres = isalnum(frase[caracteres - 1]) ? caracteres : caracteres - 1;
+            caracteres--;
+            if (isalnum(frase[0]))
+            {
+                frase[caracteres] = '\0';
+            }
+            else
+            {
+                frase[0] = '\0';
+                frase++;
+            }
         }
     }
 
@@ -98,6 +109,4 @@ bool palindromoOuNao(int caracteres, char *frase, bool *palindromoDireto)
         caracteres -= 2;
         return palindromoOuNao(caracteres, frase, palindromoDireto);
     }
-
-
 }
