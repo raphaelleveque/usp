@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 50
 
 typedef struct attributes
 {
@@ -36,7 +35,7 @@ void printPokemonAttack(Pokedex *pokemon);
 
 int main()
 {
-    Pokedex pokemons[MAX];
+    Pokedex *pokemons = malloc(sizeof(Pokedex));
 
     int command, numberOfPokemons = 0;
 
@@ -48,6 +47,7 @@ int main()
         case 1:
             addNewPokemon(&pokemons[numberOfPokemons]);
             numberOfPokemons++;
+            pokemons = realloc(pokemons, (numberOfPokemons + 1) * sizeof(Pokedex));
             break;
 
         case 2:
@@ -64,6 +64,7 @@ int main()
         }
     } while (command != 0);
 
+    free(pokemons);
     return 0;
 }
 
