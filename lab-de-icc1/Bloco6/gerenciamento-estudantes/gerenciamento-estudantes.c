@@ -11,7 +11,7 @@ typedef struct students
 } Students;
 
 char *readLine();
-void searchIdentifier(Students *studentList, int numberOfStudents, int command, void *identifierToFind);
+void searchStudent(Students *studentList, int numberOfStudents, int command, void *identifierToFind);
 void printStudentInformations(Students *studentList, int studentPosition);
 
 int main()
@@ -33,7 +33,7 @@ int main()
         studentList = realloc(studentList, (currentStudent + 1) * sizeof(Students));
 
     } while (1);
-    
+
     int command;
     do
     {
@@ -42,13 +42,14 @@ int main()
         {
             int identifierToFind;
             scanf("%d", &identifierToFind);
-            searchIdentifier(studentList, currentStudent, 1, &identifierToFind);
+            searchStudent(studentList, currentStudent, 1, &identifierToFind);
         }
         else if (command == 2)
         {
             char *studentCourse;
             studentCourse = readLine();
-            searchIdentifier(studentList, currentStudent, 2, studentCourse);
+            searchStudent(studentList, currentStudent, 2, studentCourse);
+            free(studentCourse);
         }
         else if (command == 3)
         {
@@ -56,47 +57,49 @@ int main()
             {
                 printStudentInformations(studentList, i);
             }
-            
         }
-        
-        
-        
-    } while (command != -1);
-    
 
+    } while (command != -1);
+
+
+    for (int i = 0; i < currentStudent; i++)
+    {
+        free(studentList[i].name);
+        free(studentList[i].course);
+    }
+    free(studentList);
 
     return 0;
 }
-
 
 char *readLine()
 {
     scanf("%*[\n\r]s");
     char *string = malloc(sizeof(char));
-    int caracteres = 0;
-    int nmrMaxChar = 1;
+    int characters = 0;
+    int maxChars = 1;
     do
     {
-        scanf("%c", &string[caracteres]);
-        if (string[caracteres] == '\n' || string[caracteres] == EOF)
+        scanf("%c", &string[characters]);
+        if (string[characters] == '\n' || string[characters] == EOF)
         {
-            string[caracteres] = '\0';
+            string[characters] = '\0';
         }
-        caracteres++;
-        if (caracteres == nmrMaxChar)
+        characters++;
+        if (characters == maxChars)
         {
-            nmrMaxChar *= 2;
-            string = realloc(string, (nmrMaxChar) * sizeof(char));
+            maxChars *= 2;
+            string = realloc(string, (maxChars) * sizeof(char));
         }
 
-    }while (string[caracteres-1] != '\0');
+    } while (string[characters - 1] != '\0');
 
-    string = realloc(string, (caracteres + 1) * sizeof(char));
+    string = realloc(string, (characters + 1) * sizeof(char));
 
     return string;
 }
 
-void searchIdentifier(Students *studentList, int numberOfStudents, int command, void *studentToFind)
+void searchStudent(Students *studentList, int numberOfStudents, int command, void *studentToFind)
 {
     int *identifier;
     char *course;
@@ -108,10 +111,9 @@ void searchIdentifier(Students *studentList, int numberOfStudents, int command, 
     {
         course = (char *)studentToFind;
     }
-    
-    
+
     int i;
-    for (i = 0; i <= numberOfStudents; i++)
+    for (i = 0; i < numberOfStudents; i++)
     {
         if (command == 1 && studentList[i].identifier == *identifier)
         {
@@ -122,13 +124,13 @@ void searchIdentifier(Students *studentList, int numberOfStudents, int command, 
         {
             printStudentInformations(studentList, i);
         }
-    }    
+    }
 }
 
 void printStudentInformations(Students *studentList, int studentPosition)
 {
-    printf("Nome: %s", studentList[studentPosition].name);
-    printf("Curso: %s", studentList[studentPosition].course);
-    printf("N USP: %d", studentList[studentPosition].identifier);
-    printf("Idade: %d", studentList[studentPosition].age);
+    printf("Nome: %s\n", studentList[studentPosition].name);
+    printf("Curso: %s\n", studentList[studentPosition].course);
+    printf("N USP: %d\n", studentList[studentPosition].identifier);
+    printf("IDADE: %d\n\n", studentList[studentPosition].age);
 }
