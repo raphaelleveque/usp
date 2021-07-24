@@ -11,7 +11,7 @@ typedef struct students
 } Students;
 
 char *readLine();
-void searchStudent(Students *studentList, int numberOfStudents, int command, void *identifierToFind);
+void searchStudent(Students *studentList, int numberOfStudents, int command, void *findStudent);
 void printStudentInformations(Students *studentList, int studentPosition);
 
 int main()
@@ -99,17 +99,17 @@ char *readLine()
     return string;
 }
 
-void searchStudent(Students *studentList, int numberOfStudents, int command, void *studentToFind)
+void searchStudent(Students *studentList, int numberOfStudents, int command, void *findStudent)
 {
     int *identifier;
     char *course;
     if (command == 1)
     {
-        identifier = (int *)studentToFind;
+        identifier = (int *)findStudent;
     }
     else if (command == 2)
     {
-        course = (char *)studentToFind;
+        course = (char *)findStudent;
     }
 
     int i;
