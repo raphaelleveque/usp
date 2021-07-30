@@ -10,46 +10,48 @@ typedef struct desenhoAscII
 } Desenho;
 
 char *lerLinha();
-void **lerDesenhoAscII(FILE *f_arte_ptr, Desenho *desenhoascii);
-void preencherCores(Desenho *desenhoascii, int x, int y, char cor);
+void lerDesenhoAscII(char *nomeDpArquivo, Desenho *desenhoascii);
+void preencherCores(Desenho *desenhoascii, int x, int y, char cor, char corInicial);
 void imprimirDesenho(Desenho *desenhoascii);
+void transferirDesenhoParaArquivo(Desenho *desenhoAscII, char *nomeDoArquivo);
 void enquadra_arte(char *nome_do_arquivo_da_arte, int altura_do_quadro, int largura_do_quadro);
 
 int main()
 {
     char *nomeDoArquivo;
     nomeDoArquivo = lerLinha();
-    FILE *f_arte_ptr = fopen(nomeDoArquivo, "w");
-
     Desenho desenhoascii;
-    lerDesenhoAscII(f_arte_ptr, &desenhoascii);
+    lerDesenhoAscII(nomeDoArquivo, &desenhoascii);
+
 
     int quantidadePreenchimentos;
     scanf("%d", &quantidadePreenchimentos);
 
-    char cor;
+    char cor, corInicial;
     int x, y;
-    printf("Desenho inicial: \n");
+    printf("Arte inicial: \n");
     imprimirDesenho(&desenhoascii);
     for (int i = 0; i < quantidadePreenchimentos; i++)
     {
+        scanf("%*[\n]");
         cor = getchar();
         scanf("%d %d", &x, &y);
+        
 
-        if (x <= desenhoascii.linhas && y <= desenhoascii.colunas)
+        if (x < desenhoascii.linhas && y < desenhoascii.colunas)
         {
+            corInicial = desenhoascii.desenho[x][y];
             desenhoascii.desenho[x][y] = cor;
         }
-        preencherCores(&desenhoascii, x, y, cor);
+        preencherCores(&desenhoascii, x, y, cor, corInicial);
 
         printf("Arte apos a etapa %d:\n", i);
         imprimirDesenho(&desenhoascii);
     }
 
-    fclose(f_arte_ptr);
-    enquadra_arte(nomeDoArquivo, desenhoascii.linhas, desenhoascii.colunas);
+    transferirDesenhoParaArquivo(&desenhoascii, nomeDoArquivo);
 
-    for (int i = 0; i <= desenhoascii.linhas; i++)
+    for (int i = 0; i < desenhoascii.linhas; i++)
     {
         free(desenhoascii.desenho[i]);
     }
@@ -86,26 +88,23 @@ char *lerLinha()
     return string;
 }
 
-void **lerDesenhoAscII(FILE *f_arte_ptr, Desenho *desenhoascii)
+void lerDesenhoAscII(char *nomeDoArquivo, Desenho *desenhoascii)
 {
+    FILE *f_arte_ptr = fopen(nomeDoArquivo, "r");
+
     desenhoascii->desenho = malloc(sizeof(char *));
     desenhoascii->desenho[0] = malloc(sizeof(char));
 
     int linhas = 0, colunas = 0;
-    do
+    while (fscanf(f_arte_ptr, "%c", &desenhoascii->desenho[linhas][colunas]) != EOF)
     {
-        fscanf(f_arte_ptr, "%c", &desenhoascii->desenho[linhas][colunas]);
-        if (desenhoascii->desenho[linhas][colunas] == EOF)
+        colunas++;
+        if (desenhoascii->desenho[linhas][colunas - 1] == '\n')
         {
-            break;
-        }
-        
-        if (desenhoascii->desenho[linhas][colunas] == '\n')
-        {
-            desenhoascii->desenho[linhas][colunas] = '\0';
+            desenhoascii->desenho[linhas][colunas - 1] = '\0';
             linhas++;
 
-            desenhoascii->desenho = realloc(desenhoascii->desenho, linhas * sizeof(char *));
+            desenhoascii->desenho = realloc(desenhoascii->desenho, (linhas + 1) * sizeof(char *));
             for (int i = 0; i <= linhas; i++)
             {
                 if (i != linhas)
@@ -114,50 +113,53 @@ void **lerDesenhoAscII(FILE *f_arte_ptr, Desenho *desenhoascii)
                 }
                 else
                 {
-                    desenhoascii->desenho[i] = malloc(sizeof(char));
+                    desenhoascii->desenho[i] = malloc(colunas * sizeof(char));
                 }
             }
 
             colunas = 0;
+            continue;
         }
-        else
+
+        if(linhas == 0)
         {
-            colunas++;
             desenhoascii->desenho[linhas] = realloc(desenhoascii->desenho[linhas], (colunas + 1) * sizeof(char));
         }
+    } 
 
-    } while (1);
-
-    desenhoascii->linhas = linhas;
+    desenhoascii->desenho[linhas][colunas] = '\0';
+    desenhoascii->linhas = linhas + 1;
     desenhoascii->colunas = colunas;
+
+    fclose(f_arte_ptr);
 }
 
-void preencherCores(Desenho *desenhoascii, int x, int y, char cor)
+void preencherCores(Desenho *desenhoascii, int x, int y, char cor, char corInicial)
 {
     bool cima = ((x - 1) >= 0);
-    bool baixo = ((x + 1) <= desenhoascii->linhas);
+    bool baixo = ((x + 1) < desenhoascii->linhas);
     bool esquerda = ((y - 1) >= 0);
-    bool direita = ((y + 1) <= desenhoascii->colunas);
+    bool direita = ((y + 1) < desenhoascii->colunas);
 
-    if (cima && desenhoascii->desenho[x - 1][y] == ' ')
+    if (cima && desenhoascii->desenho[x - 1][y] == corInicial)
     {
         desenhoascii->desenho[x - 1][y] = cor;
-        preencherCores(desenhoascii, x - 1, y, cor);
+        preencherCores(desenhoascii, x - 1, y, cor, corInicial);
     }
-    if (baixo && desenhoascii->desenho[x + 1][y] == ' ')
+    if (baixo && desenhoascii->desenho[x + 1][y] == corInicial)
     {
         desenhoascii->desenho[x + 1][y] = cor;
-        preencherCores(desenhoascii, x - 1, y, cor);
+        preencherCores(desenhoascii, x + 1, y, cor, corInicial);
     }
-    if (esquerda && desenhoascii->desenho[x][y - 1] == ' ')
+    if (esquerda && desenhoascii->desenho[x][y - 1] == corInicial)
     {
-        desenhoascii->desenho[x + 1][y] = cor;
-        preencherCores(desenhoascii, x - 1, y, cor);
+        desenhoascii->desenho[x][y - 1] = cor;
+        preencherCores(desenhoascii, x, y - 1, cor, corInicial);
     }
-    if (direita && desenhoascii->desenho[x][y + 1] == ' ')
+    if (direita && desenhoascii->desenho[x][y + 1] == corInicial)
     {
-        desenhoascii->desenho[x + 1][y] = cor;
-        preencherCores(desenhoascii, x - 1, y, cor);
+        desenhoascii->desenho[x][y + 1] = cor;
+        preencherCores(desenhoascii, x, y + 1, cor, corInicial);
     }
 }
 
@@ -171,6 +173,27 @@ void imprimirDesenho(Desenho *desenhoascii)
         }
         printf("\n");
     }
+    printf("\n");
+}
+
+void transferirDesenhoParaArquivo(Desenho *desenhoascii, char *nomeDoArquivo)
+{
+    FILE *f_arte_ptr = fopen(nomeDoArquivo, "w");
+    for (int i = 0; i < desenhoascii->linhas; i++)
+    {
+        if (i == desenhoascii->linhas - 1)
+        {
+            fprintf(f_arte_ptr, "%s", desenhoascii->desenho[i]);
+        }
+        else
+        {
+            fprintf(f_arte_ptr, "%s\n", desenhoascii->desenho[i]);
+        }
+        
+    }
+    fclose(f_arte_ptr);
+    printf("Arte enquadrada: \n");
+    enquadra_arte(nomeDoArquivo, desenhoascii->linhas, desenhoascii->colunas);
 }
 
 void enquadra_arte(char *nome_do_arquivo_da_arte, int altura_do_quadro, int largura_do_quadro)
