@@ -1,6 +1,8 @@
+// Raphael Leveque 12542522
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct desenhoAscII
 {
@@ -9,8 +11,7 @@ typedef struct desenhoAscII
     char **desenho;
 } Desenho;
 
-char *lerLinha();
-void lerDesenhoAscII(char *nomeDpArquivo, Desenho *desenhoascii);
+char *lerLinha(FILE *fluxo, bool *possuiEOF);
 void preencherCores(Desenho *desenhoascii, int x, int y, char cor, char corInicial);
 void imprimirDesenho(Desenho *desenhoascii);
 void transferirDesenhoParaArquivo(Desenho *desenhoAscII, char *nomeDoArquivo);
@@ -18,10 +19,26 @@ void enquadra_arte(char *nome_do_arquivo_da_arte, int altura_do_quadro, int larg
 
 int main()
 {
+    bool possuiEOF = false;
     char *nomeDoArquivo;
-    nomeDoArquivo = lerLinha();
+    nomeDoArquivo = lerLinha(stdin, &possuiEOF);
+
     Desenho desenhoascii;
-    lerDesenhoAscII(nomeDoArquivo, &desenhoascii);
+    desenhoascii.desenho = NULL;
+    desenhoascii.linhas = 0;
+    desenhoascii.colunas = 0;
+
+    FILE *f_arte_ptr = fopen(nomeDoArquivo, "r");
+    do
+    {
+        desenhoascii.desenho = realloc(desenhoascii.desenho, (desenhoascii.linhas + 1) * sizeof(char *));
+        desenhoascii.desenho[desenhoascii.linhas] = lerLinha(f_arte_ptr, &possuiEOF);
+        desenhoascii.colunas = strlen(desenhoascii.desenho[0]);
+
+        desenhoascii.linhas++;
+    } while (!possuiEOF);
+    
+    fclose(f_arte_ptr);
 
 
     int quantidadePreenchimentos;
@@ -61,17 +78,18 @@ int main()
     return 0;
 }
 
-char *lerLinha()
+char *lerLinha(FILE *fluxo, bool *possuiEOF)
 {
-    scanf("%*[\n\r]s");
+    scanf("%*[\n]s");
     char *string = malloc(sizeof(char));
     int caracteres = 0;
     int nmrMaxChar = 1;
     do
     {
-        scanf("%c", &string[caracteres]);
+        string[caracteres] = getc(fluxo);
         if (string[caracteres] == '\n' || string[caracteres] == EOF)
         {
+            *possuiEOF = (string[caracteres] == EOF);
             string[caracteres] = '\0';
         }
         caracteres++;
@@ -86,52 +104,6 @@ char *lerLinha()
     string = realloc(string, (caracteres + 1) * sizeof(char));
 
     return string;
-}
-
-void lerDesenhoAscII(char *nomeDoArquivo, Desenho *desenhoascii)
-{
-    FILE *f_arte_ptr = fopen(nomeDoArquivo, "r");
-
-    desenhoascii->desenho = malloc(sizeof(char *));
-    desenhoascii->desenho[0] = malloc(sizeof(char));
-
-    int linhas = 0, colunas = 0;
-    while (fscanf(f_arte_ptr, "%c", &desenhoascii->desenho[linhas][colunas]) != EOF)
-    {
-        colunas++;
-        if (desenhoascii->desenho[linhas][colunas - 1] == '\n')
-        {
-            desenhoascii->desenho[linhas][colunas - 1] = '\0';
-            linhas++;
-
-            desenhoascii->desenho = realloc(desenhoascii->desenho, (linhas + 1) * sizeof(char *));
-            for (int i = 0; i <= linhas; i++)
-            {
-                if (i != linhas)
-                {
-                    desenhoascii->desenho[i] = realloc(desenhoascii->desenho[i], colunas * sizeof(char));
-                }
-                else
-                {
-                    desenhoascii->desenho[i] = malloc(colunas * sizeof(char));
-                }
-            }
-
-            colunas = 0;
-            continue;
-        }
-
-        if(linhas == 0)
-        {
-            desenhoascii->desenho[linhas] = realloc(desenhoascii->desenho[linhas], (colunas + 1) * sizeof(char));
-        }
-    } 
-
-    desenhoascii->desenho[linhas][colunas] = '\0';
-    desenhoascii->linhas = linhas + 1;
-    desenhoascii->colunas = colunas;
-
-    fclose(f_arte_ptr);
 }
 
 void preencherCores(Desenho *desenhoascii, int x, int y, char cor, char corInicial)
