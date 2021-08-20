@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include<unistd.h>
 
 char **readingMaze(char **maze, int rows, int columns, FILE *input, int *peopleSearchingYou, int *validPaths);
 char *readLine();
@@ -26,6 +27,8 @@ int main()
 
     maze[initialRow][initialColumn] = '*';
     int visitedPaths = 1;
+
+    printingMaze(maze, rows, columns);
     mazeRunner(maze, rows, columns, initialColumn, initialRow, &visitedPaths);
 
     printingMaze(maze, rows, columns);
@@ -48,6 +51,7 @@ int main()
     }
     free(maze);
 
+    printf("\e[?25h"); // show cursor
     return 0;
 }
 
@@ -122,6 +126,7 @@ int mazeRunner(char **maze, int rows, int columns, int currentColumn, int curren
     {
         maze[currentRow - 1][currentColumn] = '*';
         (*visitedPaths)++;
+        printingMaze(maze, rows, columns);
 
         int stopRecursion = mazeRunner(maze, rows, columns, currentColumn, currentRow - 1, visitedPaths);
         if (stopRecursion == -1)
@@ -133,6 +138,7 @@ int mazeRunner(char **maze, int rows, int columns, int currentColumn, int curren
     {
         maze[currentRow][currentColumn + 1] = '*';
         (*visitedPaths)++;
+        printingMaze(maze, rows, columns);
 
         int stopRecursion = mazeRunner(maze, rows, columns, currentColumn + 1, currentRow, visitedPaths);
         if (stopRecursion == -1)
@@ -144,6 +150,7 @@ int mazeRunner(char **maze, int rows, int columns, int currentColumn, int curren
     {
         maze[currentRow + 1][currentColumn] = '*';
         (*visitedPaths)++;
+        printingMaze(maze, rows, columns);
 
         int stopRecursion = mazeRunner(maze, rows, columns, currentColumn, currentRow + 1, visitedPaths);
         if (stopRecursion == -1)
@@ -155,6 +162,7 @@ int mazeRunner(char **maze, int rows, int columns, int currentColumn, int curren
     {
         maze[currentRow][currentColumn - 1] = '*';
         (*visitedPaths)++;
+        printingMaze(maze, rows, columns);
 
         int stopRecursion = mazeRunner(maze, rows, columns, currentColumn - 1, currentRow, visitedPaths);
         if (stopRecursion == -1)
@@ -167,12 +175,28 @@ int mazeRunner(char **maze, int rows, int columns, int currentColumn, int curren
 
 void printingMaze(char **maze, int rows, int columns)
 {
+    printf("\n\n\n");
+    printf("\e[2J"); // clear
+	printf("\e[?25l"); // hide cursor
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < columns; j++)
         {
-            printf("%c", maze[i][j]);
+            if (maze[i][j] == '*')
+            {
+                printf("%s%c%s", "\033[0;33m", maze[i][j], "\033[0m");
+            }
+            else if(maze[i][j] == '#')
+            {
+                printf("%s%c%s", "\e[0;32m", maze[i][j], "\033[0m");
+            }
+            else
+            {
+                printf("%c", maze[i][j]);
+            }
         }
         printf("\n");
     }
+    printf("\n\n\n");
+    usleep(150000);
 }
