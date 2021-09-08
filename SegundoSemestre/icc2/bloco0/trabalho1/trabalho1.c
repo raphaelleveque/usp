@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 enum Opcoes
 {
@@ -26,11 +27,12 @@ typedef struct campoMinado
 } CampoMinado;
 
 char *lerLinha(FILE *fluxo, bool *possuiEOF);
-void imprimirCampoMinado(CampoMinado *campoMinado, bool matrizFinal);
+void imprimirCampoMinado(CampoMinado *campoMinado, bool matrizCopia);
 void matrizDicas(CampoMinado *campoMinado);
 int verificandoBombasProximas(CampoMinado *campoMinado, int i, int j);
 void dicaSelecionada(CampoMinado *campoMinado, int linha, int coluna, bool espacoVazio);
-void espacoVazioSelecionado(CampoMinado *campoMinado, int linha, int coluna);
+void verificandoEspacosVazios(CampoMinado *campoMinado, int linha, int coluna);
+void imprime(CampoMinado *campoMinado);
 
 int main()
 {
@@ -47,7 +49,6 @@ int main()
     campoMinado.colunas = 0;
 
     FILE *arquivo = fopen(nomeArquivo, "r");
-
     do
     {
         campoMinado.matrizCampoMinado = realloc(campoMinado.matrizCampoMinado, (campoMinado.linhas + 1) * sizeof(char *));
@@ -56,6 +57,11 @@ int main()
 
         campoMinado.linhas++;
     } while (!possuiEOF);
+    campoMinado.matrizCopia = malloc(campoMinado.linhas * sizeof(char *));
+    for (int i = 0; i < campoMinado.linhas; i++)
+    {
+        campoMinado.matrizCopia[i] = malloc(campoMinado.colunas * sizeof(char));
+    }
 
     if (opcao == Imprime)
     {
@@ -83,9 +89,20 @@ int main()
         else if (campoMinado.matrizCampoMinado[linha][coluna] == '.')
         {
             dicaSelecionada(&campoMinado, linha, coluna, true);
+            verificandoEspacosVazios(&campoMinado, linha, coluna);
             imprimirCampoMinado(&campoMinado, true);
         }
     }
+    fclose(arquivo);
+    free(nomeArquivo);
+    for (int i = 0; i < campoMinado.linhas; i++)
+    {
+        free(campoMinado.matrizCampoMinado[i]);
+        free(campoMinado.matrizCopia[i]);
+    }
+    free(campoMinado.matrizCampoMinado);
+    free(campoMinado.matrizCopia);
+    
 
     return 0;
 }
@@ -128,39 +145,31 @@ char *lerLinha(FILE *fluxo, bool *possuiEOF)
         }
 
     } while (string[caracteres - 1] != '\0');
-
     string = realloc(string, (caracteres + 1) * sizeof(char));
 
     return string;
 }
 
-void imprimirCampoMinado(CampoMinado *campoMinado, bool matrizFinal)
+void imprimirCampoMinado(CampoMinado *campoMinado, bool matrizCopia)
 {
-    if (matrizFinal)
-    {
-        for (int i = 0; i < campoMinado->linhas; i++)
-        {
-            for (int j = 0; j < campoMinado->colunas; j++)
-            {
-                printf("%c", campoMinado->matrizCopia[i][j]);
-            }
-            printf("\n");
-        }
-        return;
-    }
-
-    printf("\n\n\n");
     for (int i = 0; i < campoMinado->linhas; i++)
     {
         for (int j = 0; j < campoMinado->colunas; j++)
         {
-            printf("%c", campoMinado->matrizCampoMinado[i][j]);
+            if (matrizCopia)
+            {
+                printf("%c", campoMinado->matrizCopia[i][j]);
+            }
+            else
+            {
+                printf("%c", campoMinado->matrizCampoMinado[i][j]);
+            }
         }
         printf("\n");
     }
-    printf("\n\n\n");
 }
 
+// Esta funcao adiciona as dicas a matriz
 void matrizDicas(CampoMinado *campoMinado)
 {
     for (int i = 0; i < campoMinado->linhas; i++)
@@ -173,11 +182,11 @@ void matrizDicas(CampoMinado *campoMinado)
             {
                 campoMinado->matrizCampoMinado[i][j] = quantidadeDeBombas + '0';
             }
-            //imprimirCampoMinado(campoMinado, false);
         }
     }
 }
 
+// Esta funcao funciona ajudando a funcao matrizDicas a encontrar quantas bombas existem em sua adjacencia
 int verificandoBombasProximas(CampoMinado *campoMinado, int i, int j)
 {
     bool cima = (i == 0);
@@ -224,88 +233,187 @@ int verificandoBombasProximas(CampoMinado *campoMinado, int i, int j)
     return quantidadeDeBombas;
 }
 
+// Esta funcao adiciona X em todos os pontos, menos o ponto selecionado
+// Caso o booleano espacoVazio seja verdadeiro, cria uma matriz copia inteiramente de X
 void dicaSelecionada(CampoMinado *campoMinado, int linha, int coluna, bool espacoVazio)
 {
-    campoMinado->matrizCopia = malloc(campoMinado->linhas * sizeof(char *));
-    for (int i = 0; i < campoMinado->linhas; i++)
-    {
-        campoMinado->matrizCopia[i] = malloc(campoMinado->colunas * sizeof(char));
-    }
-
-    campoMinado->matrizCopia[linha][coluna] = '.';
     for (int i = 0; i < campoMinado->linhas; i++)
     {
         for (int j = 0; j < campoMinado->colunas; j++)
         {
             if (!(i == linha && j == coluna))
             {
-                campoMinado->matrizCopia[i][j] = 'X';
-                if (!espacoVazio)
+                if (espacoVazio)
+                {
+                    campoMinado->matrizCopia[i][j] = 'X';
+                }
+                else
                 {
                     campoMinado->matrizCampoMinado[i][j] = 'X';
                 }
             }
         }
     }
-    if (espacoVazio)
-    {
-        espacoVazioSelecionado(campoMinado, linha, coluna);
-    }
 }
 
-void espacoVazioSelecionado(CampoMinado *campoMinado, int linha, int coluna)
+// Esta funcao e a recursiva, verificando onde ela ja passou e onde esta marcado com ponto (P) ou numero (N)
+void verificandoEspacosVazios(CampoMinado *campoMinado, int linha, int coluna)
 {
     bool cima = (linha == 0);
     bool baixo = (linha == campoMinado->linhas - 1);
     bool esquerda = (coluna == 0);
     bool direita = (coluna == campoMinado->colunas - 1);
 
-    if (!(campoMinado->matrizCampoMinado[linha][coluna] >= '0' && campoMinado->matrizCampoMinado[linha][coluna] >= '9'))
+    if (!cima)
     {
-        campoMinado->matrizCopia[linha][coluna] = campoMinado->matrizCampoMinado[linha][coluna];
-        if (!cima && !esquerda && campoMinado->matrizCopia[linha - 1][coluna - 1] == 'X')
+        if (campoMinado->matrizCampoMinado[linha - 1][coluna] == '.')
         {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha - 1, coluna - 1);
+            campoMinado->matrizCopia[linha - 1][coluna] = campoMinado->matrizCampoMinado[linha - 1][coluna];
+            campoMinado->matrizCampoMinado[linha - 1][coluna] = 'P';
+            verificandoEspacosVazios(campoMinado, linha - 1, coluna);
         }
-        if (!cima && campoMinado->matrizCopia[linha - 1][coluna] == 'X')
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna] >= '0' && campoMinado->matrizCampoMinado[linha - 1][coluna] <= '9')
         {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha - 1, coluna);
+            campoMinado->matrizCopia[linha - 1][coluna] = campoMinado->matrizCampoMinado[linha - 1][coluna];
+            campoMinado->matrizCampoMinado[linha - 1][coluna] = 'N';
         }
-        if (!cima && !direita && campoMinado->matrizCopia[linha - 1][coluna + 1] == 'X')
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna] == '*' || campoMinado->matrizCampoMinado[linha - 1][coluna] == 'X')
         {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha - 1, coluna + 1);
-        }
-        if (!direita && campoMinado->matrizCopia[linha][coluna + 1] == 'X')
-        {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha, coluna + 1);
-        }
-        if (!baixo && !direita && campoMinado->matrizCopia[linha + 1][coluna + 1] == 'X')
-        {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha + 1, coluna + 1);
-        }
-        if (!baixo && campoMinado->matrizCopia[linha + 1][coluna] == 'X')
-        {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha + 1, coluna);
-        }
-        if (!baixo && !esquerda && campoMinado->matrizCopia[linha + 1][coluna - 1] == 'X')
-        {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha + 1, coluna - 1);
-        }
-        if (!esquerda && campoMinado->matrizCopia[linha][coluna - 1] == 'X')
-        {
-            imprimirCampoMinado(campoMinado, true);
-            espacoVazioSelecionado(campoMinado, linha, coluna - 1);
+            campoMinado->matrizCopia[linha - 1][coluna] = 'X';
+            campoMinado->matrizCampoMinado[linha - 1][coluna] = 'X';
         }
     }
-    else
+    if (!cima && !esquerda)
     {
-        //campoMinado->matrizCopia[linha][coluna] = campoMinado->matrizCampoMinado[linha][coluna];
+        if (campoMinado->matrizCampoMinado[linha - 1][coluna - 1] == '.')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna - 1] = campoMinado->matrizCampoMinado[linha - 1][coluna - 1];
+            campoMinado->matrizCampoMinado[linha - 1][coluna - 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha - 1, coluna - 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna - 1] >= '0' && campoMinado->matrizCampoMinado[linha - 1][coluna - 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna - 1] = campoMinado->matrizCampoMinado[linha - 1][coluna - 1];
+            campoMinado->matrizCampoMinado[linha - 1][coluna - 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna - 1] == '*' || campoMinado->matrizCampoMinado[linha - 1][coluna - 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna - 1] = 'X';
+            campoMinado->matrizCampoMinado[linha - 1][coluna - 1] = 'X';
+        }
+    }
+    if (!cima && !direita)
+    {
+        if (campoMinado->matrizCampoMinado[linha - 1][coluna + 1] == '.')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna + 1] = campoMinado->matrizCampoMinado[linha - 1][coluna + 1];
+            campoMinado->matrizCampoMinado[linha - 1][coluna + 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha - 1, coluna + 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna + 1] >= '0' && campoMinado->matrizCampoMinado[linha - 1][coluna + 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna + 1] = campoMinado->matrizCampoMinado[linha - 1][coluna + 1];
+            campoMinado->matrizCampoMinado[linha - 1][coluna + 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha - 1][coluna + 1] == '*' || campoMinado->matrizCampoMinado[linha - 1][coluna + 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha - 1][coluna + 1] = 'X';
+            campoMinado->matrizCampoMinado[linha - 1][coluna + 1] = 'X';
+        }
+    }
+    if (!baixo)
+    {
+        if (campoMinado->matrizCampoMinado[linha + 1][coluna] == '.')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna] = campoMinado->matrizCampoMinado[linha + 1][coluna];
+            campoMinado->matrizCampoMinado[linha + 1][coluna] = 'P';
+            verificandoEspacosVazios(campoMinado, linha + 1, coluna);
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna] >= '0' && campoMinado->matrizCampoMinado[linha + 1][coluna] <= '9')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna] = campoMinado->matrizCampoMinado[linha + 1][coluna];
+            campoMinado->matrizCampoMinado[linha + 1][coluna] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna] == '*' || campoMinado->matrizCampoMinado[linha + 1][coluna] == 'X')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna] = 'X';
+            campoMinado->matrizCampoMinado[linha + 1][coluna] = 'X';
+        }
+    }
+    if (!baixo && !esquerda)
+    {
+        if (campoMinado->matrizCampoMinado[linha + 1][coluna - 1] == '.')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna - 1] = campoMinado->matrizCampoMinado[linha + 1][coluna - 1];
+            campoMinado->matrizCampoMinado[linha + 1][coluna - 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha + 1, coluna - 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna - 1] >= '0' && campoMinado->matrizCampoMinado[linha + 1][coluna - 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna - 1] = campoMinado->matrizCampoMinado[linha + 1][coluna - 1];
+            campoMinado->matrizCampoMinado[linha + 1][coluna - 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna - 1] == '*' || campoMinado->matrizCampoMinado[linha + 1][coluna - 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna - 1] = 'X';
+            campoMinado->matrizCampoMinado[linha + 1][coluna - 1] = 'X';
+        }
+    }
+    if (!baixo && !direita)
+    {
+        if (campoMinado->matrizCampoMinado[linha + 1][coluna + 1] == '.')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna + 1] = campoMinado->matrizCampoMinado[linha + 1][coluna + 1];
+            campoMinado->matrizCampoMinado[linha + 1][coluna + 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha + 1, coluna + 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna + 1] >= '0' && campoMinado->matrizCampoMinado[linha + 1][coluna + 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna + 1] = campoMinado->matrizCampoMinado[linha + 1][coluna + 1];
+            campoMinado->matrizCampoMinado[linha + 1][coluna + 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha + 1][coluna + 1] == '*' || campoMinado->matrizCampoMinado[linha + 1][coluna + 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha + 1][coluna + 1] = 'X';
+            campoMinado->matrizCampoMinado[linha + 1][coluna + 1] = 'X';
+        }
+    }
+    if (!esquerda)
+    {
+        if (campoMinado->matrizCampoMinado[linha][coluna - 1] == '.')
+        {
+            campoMinado->matrizCopia[linha][coluna - 1] = campoMinado->matrizCampoMinado[linha][coluna - 1];
+            campoMinado->matrizCampoMinado[linha][coluna - 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha, coluna - 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha][coluna - 1] >= '0' && campoMinado->matrizCampoMinado[linha][coluna - 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha][coluna - 1] = campoMinado->matrizCampoMinado[linha][coluna - 1];
+            campoMinado->matrizCampoMinado[linha][coluna - 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha][coluna - 1] == '*' || campoMinado->matrizCampoMinado[linha][coluna - 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha][coluna - 1] = 'X';
+            campoMinado->matrizCampoMinado[linha][coluna - 1] = 'X';
+        }
+    }
+    if (!direita)
+    {
+        if (campoMinado->matrizCampoMinado[linha][coluna + 1] == '.')
+        {
+            campoMinado->matrizCopia[linha][coluna + 1] = campoMinado->matrizCampoMinado[linha][coluna + 1];
+            campoMinado->matrizCampoMinado[linha][coluna + 1] = 'P';
+            verificandoEspacosVazios(campoMinado, linha, coluna + 1);
+        }
+        else if (campoMinado->matrizCampoMinado[linha][coluna + 1] >= '0' && campoMinado->matrizCampoMinado[linha][coluna + 1] <= '9')
+        {
+            campoMinado->matrizCopia[linha][coluna + 1] = campoMinado->matrizCampoMinado[linha][coluna + 1];
+            campoMinado->matrizCampoMinado[linha][coluna + 1] = 'N';
+        }
+        else if (campoMinado->matrizCampoMinado[linha][coluna + 1] == '*' || campoMinado->matrizCampoMinado[linha][coluna + 1] == 'X')
+        {
+            campoMinado->matrizCopia[linha][coluna + 1] = 'X';
+            campoMinado->matrizCampoMinado[linha][coluna + 1] = 'X';
+        }
     }
 }
