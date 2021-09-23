@@ -1,17 +1,24 @@
 #include "strings.h"
 
 void lendoString(string_t string)
-{
-    scanf("%*[\n]s");
-    
-    char c;
-    int i = 0;
-    while ((c = getchar()) != '\n' )
+{    
+    scanf("%*[\r\n]s");
+    int caracteres = 0;
+    int nmrMaxChar = 1;
+    do
     {
-        string[i] = c;
-        i++;
-    }
-    string[i] = '\0';
+        string[caracteres] = getchar();
+        if (string[caracteres] == '\n' || string[caracteres] == EOF)
+        {
+            if (string[caracteres - 1] == '\r')
+            {
+                caracteres--;
+            }
+            string[caracteres] = '\0';
+        }
+        caracteres++;
+
+    }while (string[caracteres-1] != '\0');
 }
 
 
