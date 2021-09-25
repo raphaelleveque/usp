@@ -88,32 +88,20 @@ void calculandoRepeticoes(palavras_t *palavras, int *totalPalavras){
 }
 
 void insertionSort(palavras_t *palavras, int n){
-    int i, chave, j;
-    int visitadoAuxiliar;
-    string_t palavraAuxiliar = NULL;
+    int i, j;
+    palavras_t chave;
     for (i = 1; i < n; i++) {
-        chave = palavras[i].repeticoes;
-        visitadoAuxiliar = palavras[i].visitada;
-        palavraAuxiliar = realloc(palavraAuxiliar, (strlen(palavras[i].palavra) + 1) * sizeof (char));
-        strcpy(palavraAuxiliar, palavras[i].palavra);
+        chave = palavras[i];
 
         j = i - 1;
-
-        while (j >= 0 && palavras[j].repeticoes < chave) {
-            palavras[j + 1].repeticoes = palavras[j].repeticoes;
-            palavras[j + 1].visitada = palavras[j].visitada;
-            palavras[j + 1].palavra = realloc(palavras[j + 1].palavra, (strlen(palavras[j].palavra) + 1) * sizeof (char));
-            strcpy(palavras[j + 1].palavra, palavras[j].palavra);
+        while (j >= 0 && palavras[j].repeticoes < chave.repeticoes) {
+            palavras[j + 1] = palavras[j];
 
             j = j - 1;
         }
-        palavras[j + 1].repeticoes = chave;
-        palavras[j + 1].visitada = visitadoAuxiliar;
-        palavras[j + 1].palavra = realloc(palavras[j + 1].palavra, (strlen(palavraAuxiliar) + 1) * sizeof (char));
-        strcpy(palavras[j + 1].palavra, palavraAuxiliar);
+        palavras[j + 1] = chave;
     }
 
-    free(palavraAuxiliar);
 }
 
 
