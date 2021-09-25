@@ -1,7 +1,7 @@
 objetos = main.o frequentes.o
 
 all: $(objetos)
-	gcc -o exe $(objetos) -Wall -Werror -g
+	gcc -o exe $(objetos) -Wall -Werror
 
 run:
 	./exe

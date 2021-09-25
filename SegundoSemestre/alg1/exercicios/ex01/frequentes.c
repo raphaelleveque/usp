@@ -120,6 +120,7 @@ void insertionSort(palavras_t *palavras, int n){
 
 void ordenandoPorNome(palavras_t *palavras, int totalPalavras){
     palavras_t auxiliar;
+    auxiliar.palavra = NULL;
     for (int i = 0; i < totalPalavras; ++i) {
         for (int j = i + 1; palavras[i].repeticoes == palavras[j].repeticoes; ++j) {
             if (strcmp(palavras[i].palavra, palavras[j].palavra) > 0){
