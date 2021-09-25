@@ -1,7 +1,7 @@
 #include "frequentes.h"
 
 int main(){
-    palavras_t *palavras;
+    palavras_t *palavras = NULL;
 
     int eof = 0;
     int fimDaLinha = 0;

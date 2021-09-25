@@ -25,6 +25,7 @@ string_t lerPalavra(int *fimDaLinha, int *eof){
 
     }while (string[caracteres-1] != '\0');
     string = realloc(string, (caracteres + 1) * sizeof(char));
+    //printf("%s\n", string);
 
     return string;
 }
@@ -67,6 +68,12 @@ void lerEntrada(palavras_t *palavras, int *eof, int *fimDaLinha, int *totalPalav
         if (!(*eof))
             printf("\n");
     }
+
+    for (int i = 0; i < *totalPalavras; i++)
+    {
+        free(palavras[i].palavra);
+    }
+    free(palavras);
 }
 
 
@@ -106,6 +113,8 @@ void insertionSort(palavras_t *palavras, int n){
         palavras[j + 1].palavra = realloc(palavras[j + 1].palavra, (strlen(palavraAuxiliar) + 1) * sizeof (char));
         strcpy(palavras[j + 1].palavra, palavraAuxiliar);
     }
+
+    free(palavraAuxiliar);
 }
 
 
