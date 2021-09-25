@@ -79,23 +79,11 @@ void checarPrioridade(pessoa_t *pessoas, int quantidadePessoas)
 
 void filaAnda(pessoa_t *pessoas, int posicao, int direitaOuEsquerda)
 {
-    string_t nomeTemporario = malloc((strlen(pessoas[posicao].nome) + 1) * sizeof(char));
-    strcpy(nomeTemporario, pessoas[posicao].nome);
-    int idadeTemporaria = pessoas[posicao].idade;
-    int condicaoTemporaria = pessoas[posicao].condicao;
-    int prioridadeTemporaria = pessoas[posicao].prioridade;
+    pessoa_t pessoaTemporaria;
 
-    strcpy(pessoas[posicao].nome, pessoas[posicao + direitaOuEsquerda].nome);
-    pessoas[posicao].idade = pessoas[posicao + direitaOuEsquerda].idade;
-    pessoas[posicao].condicao = pessoas[posicao + direitaOuEsquerda].condicao;
-    pessoas[posicao].prioridade = pessoas[posicao + direitaOuEsquerda].prioridade;
-
-    strcpy(pessoas[posicao + direitaOuEsquerda].nome, nomeTemporario);
-    pessoas[posicao + direitaOuEsquerda].idade = idadeTemporaria;
-    pessoas[posicao + direitaOuEsquerda].condicao = condicaoTemporaria;
-    pessoas[posicao + direitaOuEsquerda].prioridade = prioridadeTemporaria;
-
-    free(nomeTemporario);
+    pessoaTemporaria = pessoas[posicao];
+    pessoas[posicao] = pessoas[posicao + direitaOuEsquerda];
+    pessoas[posicao + direitaOuEsquerda] = pessoaTemporaria;
 }
 
 
