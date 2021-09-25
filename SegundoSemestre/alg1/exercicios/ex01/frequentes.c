@@ -25,7 +25,6 @@ string_t lerPalavra(int *fimDaLinha, int *eof){
 
     }while (string[caracteres-1] != '\0');
     string = realloc(string, (caracteres + 1) * sizeof(char));
-    //printf("%s\n", string);
 
     return string;
 }
@@ -124,20 +123,11 @@ void ordenandoPorNome(palavras_t *palavras, int totalPalavras){
     for (int i = 0; i < totalPalavras; ++i) {
         for (int j = i + 1; palavras[i].repeticoes == palavras[j].repeticoes; ++j) {
             if (strcmp(palavras[i].palavra, palavras[j].palavra) > 0){
-                auxiliar.repeticoes = palavras[i].repeticoes;
-                auxiliar.visitada = palavras[i].visitada;
-                auxiliar.palavra = realloc(auxiliar.palavra, (strlen(palavras[i].palavra) + 1) * sizeof (char));
-                strcpy(auxiliar.palavra, palavras[i].palavra);
+                auxiliar = palavras[i];
 
-                palavras[i].repeticoes = palavras[j].repeticoes;
-                palavras[i].visitada = palavras[j].visitada;
-                palavras[i].palavra = realloc(palavras[i].palavra, (strlen(palavras[j].palavra) + 1) * sizeof (char));
-                strcpy(palavras[i].palavra, palavras[j].palavra);
+                palavras[i] = palavras[j];
 
-                palavras[j].repeticoes = auxiliar.repeticoes;
-                palavras[j].visitada = auxiliar.visitada;
-                palavras[j].palavra = realloc(palavras[j].palavra, (strlen(auxiliar.palavra) + 1) * sizeof(char));
-                strcpy(palavras[j].palavra, auxiliar.palavra);
+                palavras[j] = auxiliar;
             }
         }
     }
