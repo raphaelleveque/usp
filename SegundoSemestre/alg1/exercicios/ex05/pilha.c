@@ -78,3 +78,9 @@ void printandoBalanceado(pilha_t *p){
     else
         printf("NÃO BALANCEADO\n");
 }
+
+void desalocaPilha(pilha_t *p){
+    if(p->tam > 0)
+        free(p->pilha);
+    free(p);
+}

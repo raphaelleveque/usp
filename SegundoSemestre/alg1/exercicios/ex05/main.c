@@ -1,8 +1,6 @@
 #include "pilha.h"
 
 int main(){
-    pilha_t *p = create();
-
     elem c;
     do{
         pilha_t *p = create();
@@ -11,6 +9,7 @@ int main(){
             p = push(p, &c);
         }
         printandoBalanceado(p);
+        desalocaPilha(p);
     }while (c != EOF);
 
 
