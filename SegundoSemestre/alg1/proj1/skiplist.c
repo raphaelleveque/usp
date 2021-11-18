@@ -41,6 +41,11 @@ void liberaSkiplist(Skiplist *sk) {
         free(no->prox);
         free(no);
     }
+    free(sk->inicio->prox);
+    free(sk->inicio->chave);
+    free(sk->inicio->definicao);
+    free(sk->inicio);
+    free(sk);
 }
 
 node *buscaSkipList(Skiplist *sk, string chave) {
@@ -111,6 +116,7 @@ int insereSkipList(Skiplist *sk, string chave, string definicao) {
         free(aux);
         return 1;
     }
+    free(aux);
     return 0;
 }
 

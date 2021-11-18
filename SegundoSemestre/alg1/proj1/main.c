@@ -17,7 +17,6 @@ int main() {
             scanf("%s%*c", verbete);
             scanf("%[^\r\n]%*[\r\n]", definicao);
             insereSkipList(sk, verbete, definicao) ? 1 : printf("OPERACAO INVALIDA\n");
-            ;
             free(definicao);
 
         } else if (strcmp(operacao, "alteracao") == 0) {
@@ -30,7 +29,6 @@ int main() {
         } else if (strcmp(operacao, "remocao") == 0) {
             scanf("%s%*[\r\n]", verbete);
             removeSkiplist(sk, verbete) ? 1 : printf("OPERACAO INVALIDA\n");
-            ;
 
         } else if (strcmp(operacao, "busca") == 0) {
             scanf("%s%*[\r\n]", verbete);
@@ -45,6 +43,7 @@ int main() {
         free(operacao);
         free(verbete);
     }
+    liberaSkiplist(sk);
 
     return 0;
 }
