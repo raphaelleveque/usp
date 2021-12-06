@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#define TAM 4
 
 typedef int elem;
 typedef struct dados dados_t;
@@ -20,4 +21,5 @@ typedef struct lista {
 
 lista_t *criar();
 int inserir(lista_t *l, dados_t temporario);
-void imprimir(lista_t *l);
+void escalonamento(lista_t *l);
+void liberar(lista_t *l);

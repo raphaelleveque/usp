@@ -7,15 +7,14 @@
 int main() {
     lista_t *l = criar();
 
-    int i = 0;
     dados_t temporario;
 
-    while (i < 4) {
-        //ungetc(c, stdin);
+    for (int i = 0; i < TAM; i++) {
         scanf("%d %d %d %d", &temporario.codigo, &temporario.tempoInicial, &temporario.volume, &temporario.prioridade);
         inserir(l, temporario);
-        i++;
     }
+    escalonamento(l);
+    liberar(l);
 
     return 0;
 }
