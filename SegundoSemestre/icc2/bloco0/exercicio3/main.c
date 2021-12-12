@@ -2,17 +2,17 @@
 
 string_t lerLinha(FILE *std);
 void lendoArquivo(FILE *arq, lista_t *l);
-alfabeto_t *vetorIndices(lista_t *l, int *tamAlf);
-void buscaVetor(lista_t *l, alfabeto_t alf[26], string_t palavraAProcurar);
+alfabeto_t *vetorIndices(lista_t *l, int *tamAlf, alfabeto_t *tmp);
+void buscaVetor(lista_t *l, alfabeto_t *alf, string_t palavraAProcurar);
+
 
 int main() {
     char codigo;
-    string_t nomeArquivo;
+    string_t nomeArquivo = NULL;
     lista_t *l = cria();
     alfabeto_t *alf = NULL;
     int tamAlf = 0;
     int alfAtualizado = 0;
-    int primeiro = 0;
 
     while ((codigo = getchar()) != '0') {
         scanf("%*[\r\n]");
@@ -21,20 +21,11 @@ int main() {
             FILE *arq = fopen(nomeArquivo, "r");
             lendoArquivo(arq, l);
             alfAtualizado = 0;
-            if (primeiro) {
-                alfabeto_t *tmp = alf;
-                free(tmp);
-                alf = vetorIndices(l, &tamAlf);
-                if (alf == NULL)
-                    printf("\n\nEH NULO\n\n");
-            }
-            primeiro = 1;
+            free(nomeArquivo);
 
         } else if (codigo == '2') {
             tamAlf = 0;
-            alf = vetorIndices(l, &tamAlf);
-            if (alf == NULL)
-            printf("\n\nEH NULO\n\n");
+            alf = vetorIndices(l, &tamAlf, alf);
             printf("%d\n", tamAlf);
             alfAtualizado = 1;
         } else {
@@ -44,7 +35,9 @@ int main() {
                 continue;
             }
             buscaVetor(l, alf, palavraAProcurar);
+            free(palavraAProcurar);
         }
+        
     }
     liberar(l);
     free(alf);
@@ -58,11 +51,13 @@ string_t lerLinha(FILE *std) {
     string_t string = malloc(sizeof(char));
     int characters = 0;
     int numberMaxChar = 1;
+    int i = 0;
     do {
-        fscanf(std, "%c", &string[characters]);
-        if (string[characters] == '\n' || string[characters] == EOF) {
+        i = fscanf(std, "%c", &string[characters]);
+        if (string[characters] == '\n' || i == EOF) {
             if (string[characters - 1] == '\r')
                 characters--;
+
             string[characters] = '\0';
         }
         characters++;
@@ -71,7 +66,7 @@ string_t lerLinha(FILE *std) {
             string = realloc(string, (numberMaxChar) * sizeof(char));
         }
 
-    } while (string[characters - 1] != '\0');
+    } while (string[characters - 1] != '\0' && i != EOF);
 
     string = realloc(string, (characters + 1) * sizeof(char));
 
@@ -92,11 +87,16 @@ void lendoArquivo(FILE *arq, lista_t *l) {
     fclose(arq);
 }
 
-alfabeto_t *vetorIndices(lista_t *l, int *tamAlf) {
+alfabeto_t *vetorIndices(lista_t *l, int *tamAlf, alfabeto_t *tmp) {
+    if (tmp != NULL)
+        free(tmp);
     alfabeto_t *alf = malloc(26 * sizeof(alfabeto_t));
+    for (int i = 0; i < 26; i++)
+        alf[i].no = NULL;
+
     no_t *p = l->inicio;
     while (p != NULL) {
-        char c = p->info[0] - 97;
+        int c = p->info[0] - 'a';
         if (alf[c].no == NULL) {
             alf[c].no = p;
             (*tamAlf)++;
@@ -106,9 +106,9 @@ alfabeto_t *vetorIndices(lista_t *l, int *tamAlf) {
     return alf;
 }
 
-void buscaVetor(lista_t *l, alfabeto_t alf[26], string_t palavraAProcurar) {
+void buscaVetor(lista_t *l, alfabeto_t *alf, string_t palavraAProcurar) {
     int nosPercorridos = 0;
-    int c = palavraAProcurar[0] - 97;
+    int c = palavraAProcurar[0] - 'a';
     no_t *p = alf[c].no;
 
     while (p != NULL && p->info[0] == palavraAProcurar[0]) {
