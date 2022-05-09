@@ -17,7 +17,6 @@ main:
 	move $a0, $v0
 	
 	jal is_pair			# jump and link para a função is_pair, passando como parâmetro $a0
-	ja
 
 	is_pair:
 		li $t0, 2		# Coloco o número 2 num registrador temporário para posteriormente dividir $a0 por 2
