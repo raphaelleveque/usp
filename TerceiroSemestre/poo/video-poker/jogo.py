@@ -36,7 +36,7 @@ def main():
             else:
                 break
 
-        creditos += mao.verifica_resultados(aposta)
+        creditos += mao.verifica_resultados(aposta) - aposta
 
         if creditos <= 0:
             continua = False

@@ -14,7 +14,7 @@ class Baralho:
         rand = Random()
         for i in range(5):
             posicao = rand.get_int_rand(51)
-            while self.baralho[posicao].em_uso == True:
+            while self.baralho[posicao].em_uso:
                 posicao = rand.get_int_rand(51)
             self.baralho[posicao].em_uso = True
             self.mao[i] = self.baralho[posicao]
@@ -57,7 +57,7 @@ class Baralho:
                     return 200 * aposta
                 if self.mao[4].numero == self.mao[0].numero + 4:
                     return 100 * aposta
-                mesmo_nipe_sem_ordem = True
+            mesmo_nipe_sem_ordem = True
         
         if naipes.count(4) > 0:
             return aposta * 50
@@ -70,7 +70,7 @@ class Baralho:
         
         seguidas = True
         for i in range(4):
-            if not (self.mao[i].numero == self.mao[i + 1].numero):
+            if (self.mao[i].numero != self.mao[i + 1].numero + 1):
                 seguidas = False
                 break
         if seguidas:
@@ -82,7 +82,7 @@ class Baralho:
         if quantidade.count(2) == 2:
             return aposta
         
-        return -aposta
+        return 0
         
 
         
