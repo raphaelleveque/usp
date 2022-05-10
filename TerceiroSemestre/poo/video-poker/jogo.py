@@ -23,7 +23,8 @@ def main():
         mao = Baralho()
         mao.inicia_mao()
         print("Sua mão é: ")
-        mao.imprime_mao()
+        print(mao)
+        print()
         for _ in range(2):
             print("Digite o número das cartas que você deseja trocar. Caso não deseje trocar nenhuma, digite 0: ", end="")
             troca_cartas_tmp = input()
@@ -35,7 +36,9 @@ def main():
             else:
                 break
 
-        if creditos == 0:
+        creditos += mao.verifica_resultados(aposta)
+
+        if creditos <= 0:
             continua = False
 
         

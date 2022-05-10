@@ -8,7 +8,7 @@ class Carta:
         self.numero = numero
         self.naipe = naipe
         
-    def imprime_carta(self): 
+    def __str__(self): 
         if self.naipe == 0:
             naipe_img = '♣️'
         elif self.naipe == 1:
@@ -17,10 +17,8 @@ class Carta:
             naipe_img = '❤️'
         else:
             naipe_img = '♠️'
-        
-        line1 = "+-----------+  "
-        line2 = "|           |  "
-        line3 = f"|     {self.numero}{naipe_img}     |  "
-        line4 = "|           |  "
-        line5 = "+-----------+  "
-        return [line1, line2, line3, line4, line5]
+
+        cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
+        carta = cartas[self.numero]
+
+        return f"{carta}{naipe_img}"
