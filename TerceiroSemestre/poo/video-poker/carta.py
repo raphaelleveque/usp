@@ -10,13 +10,13 @@ class Carta:
         
     def __str__(self): 
         if self.naipe == 0:
-            naipe_img = '♣️'
+            naipe_img = '♣'
         elif self.naipe == 1:
-            naipe_img = '♦️'
+            naipe_img = '♦'
         elif self.naipe == 2:
-            naipe_img = '❤️'
+            naipe_img = '♥'
         else:
-            naipe_img = '♠️'
+            naipe_img = '♠'
 
         cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
         carta = cartas[self.numero]

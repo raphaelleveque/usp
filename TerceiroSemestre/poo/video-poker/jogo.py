@@ -21,7 +21,7 @@ def main():
     
         mao = Baralho()
         mao.inicia_mao()
-        print("Sua mão é: ")
+        print("\nSua mão é: ")
         print(mao)
         print()
         for _ in range(2):
@@ -32,14 +32,15 @@ def main():
                 troca_cartas = troca_cartas_tmp.split()
                 mao.renova_mao(troca_cartas)
                 print(mao)
+                print()
             else:
                 break
 
         creditos += mao.verifica_resultados(aposta)
-        print(creditos)
 
         if creditos <= 0:
             continua = False
+        print()
 
     print(f"Seu saldo final foi de {creditos} créditos!")
         
