@@ -18,7 +18,6 @@ def main():
             print("Valor de aposta inferior ao número de créditos, tente outra aposta!")
             print(f"Digite um número menor ou igual a {creditos} para sua nova aposta: ", end="")
             aposta = int(input())
-        creditos -= aposta
     
         mao = Baralho()
         mao.inicia_mao()
@@ -37,17 +36,13 @@ def main():
                 break
 
         creditos += mao.verifica_resultados(aposta)
+        print(creditos)
 
         if creditos <= 0:
             continua = False
 
+    print(f"Seu saldo final foi de {creditos} créditos!")
         
-        
-
-
-
-
-
 
 if __name__ == "__main__":
     main()

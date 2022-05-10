@@ -23,7 +23,6 @@ class Baralho:
     def renova_mao(self, troca_cartas):
         for i in range(len(troca_cartas)):
             troca_cartas[i] = int(troca_cartas[i]) - 1
-            print(f"\n\n{troca_cartas}\n\n")
             if troca_cartas[i] >= len(self.mao) + 1 or troca_cartas[i] < 0:
                 print("Carta Inválida")
                 break
@@ -42,8 +41,6 @@ class Baralho:
 
     def verifica_resultados(self, aposta):
         self.mao.sort(key=lambda x: x.numero)
-        for i in range(5):
-            print(self.mao[i], end="        ")
 
         quantidade = [0] * 13
         for i in range(5):
