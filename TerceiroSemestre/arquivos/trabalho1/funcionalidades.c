@@ -52,14 +52,10 @@ void funcionalidade1(int tipo_do_arquivo, string_t csv, string_t binario_saida) 
 
     // Escrever cabeçalho inicializado com valores padrão:
     cabecalho_t *cabecalho = criar_cabecalho();
-    if (tipo_do_arquivo == 1) {
-        escrever_cabecalho1_em_arquivo(cabecalho, arq_saida);    
-    } else if (tipo_do_arquivo == 2) {
-        escrever_cabecalho2_em_arquivo(cabecalho, arq_saida);    
-
-        // Setando próximo byteoffset como depois do cabeçalho:
-        set_proxByteOffset_cabecalho(cabecalho, TAM_CAB_2);
-    }
+    escrever_cabecalho_em_arquivo(cabecalho, tipo_do_arquivo, arq_saida);  
+    
+    // Setando próximo byteoffset como depois do cabeçalho caso seja tipo 2:
+    set_proxByteOffset(cabecalho, TAM_CAB_2);
     
     int has_EOF = 0;
     // Ler e destruir primeira linha de header do csv:
@@ -105,8 +101,8 @@ void funcionalidade1(int tipo_do_arquivo, string_t csv, string_t binario_saida) 
             set_proxRRN(cabecalho, novoProxRRN);
         } else if (tipo_do_arquivo == 2) {
             tam_reg2 = escrever_registro2_em_arquivo(reg, arq_saida);
-            novoProxByteOffset = get_proxByteOffset2(cabecalho) + tam_reg2;
-            set_proxByteOffset2(cabecalho, novoProxByteOffset);
+            novoProxByteOffset = get_proxByteOffset(cabecalho) + tam_reg2;
+            set_proxByteOffset(cabecalho, novoProxByteOffset);
         }
 
         // Liberar memória:
@@ -140,8 +136,8 @@ void funcionalidade2(int tipo_do_arquivo, string_t binario_entrada) {
     cabecalho_t *cabecalho = criar_cabecalho();
     ler_cabecalho_de_arquivo(cabecalho, tipo_do_arquivo, arq_entrada);
     char status = get_status(cabecalho);
-    int proxRRN = get_proxRRN_cabecalho(cabecalho);
-    long long int proxByteOffset = get_proxByteOffset2(c2);
+    int proxRRN = get_proxRRN(cabecalho);
+    long long int proxByteOffset = get_proxByteOffset(cabecalho);
 
     destruir_cabecalho(cabecalho);
     
@@ -186,7 +182,7 @@ void funcionalidade2(int tipo_do_arquivo, string_t binario_entrada) {
         while (byteOffset_atual < proxByteOffset) {
             registro_t *reg = criar_registro();
 
-            int tam_reg = ler_registro(reg, arq_entrada);
+            int tam_reg = ler_registro(reg, tipo_do_arquivo, arq_entrada);
             byteOffset_atual += tam_reg;
 
             char removido = get_removido(reg);
@@ -195,7 +191,7 @@ void funcionalidade2(int tipo_do_arquivo, string_t binario_entrada) {
                 imprimir_registro(reg);
             }
 
-            destruir_registro2(reg, 1);
+            destruir_registro(reg, 1);
         }
     }
 
@@ -203,7 +199,6 @@ void funcionalidade2(int tipo_do_arquivo, string_t binario_entrada) {
 }
 
 
-// PARAMOS AQUI
 void funcionalidade3(int tipo_de_arquivo, string_t binario_entrada, int n) {
     FILE *arq_entrada = fopen(binario_entrada, "rb");
     if (!arq_entrada) {
@@ -236,12 +231,12 @@ void funcionalidade3(int tipo_de_arquivo, string_t binario_entrada, int n) {
 void busca_parametrizada1(FILE *arq_entrada, string_t *nome_campos, string_t *valor_campos, int n) {
     cabecalho_t *cabecalho = criar_cabecalho();
 
-    ler_cabecalho1_de_arquivo(cabecalho, arq_entrada);
+    ler_cabecalho_de_arquivo(cabecalho, 1, arq_entrada);
 
-    int proxRRN = get_proxRRN1(cabecalho);
-    char status = get_status1(cabecalho);
+    int proxRRN = get_proxRRN(cabecalho);
+    char status = get_status(cabecalho);
 
-    destruir_cabecalho1(cabecalho);
+    destruir_cabecalho(cabecalho);
     
     if (status == '0') {
         printf("Falha no processamento do arquivo.\n");
@@ -255,16 +250,18 @@ void busca_parametrizada1(FILE *arq_entrada, string_t *nome_campos, string_t *va
         return;
     }
 
+    int n_registros_encontrados = 0;
     string_t campos_validos[] = {"id", "ano", "qtt", "sigla", "cidade", "marca", "modelo"};
-    for (int i = 0; i < proxRRN; i++) {
-        registro1_t *reg1 = criar_registro1();
 
-        ler_registro1(reg1, arq_entrada);
+    for (int i = 0; i < proxRRN; i++) {
+        registro_t *reg = criar_registro();
+
+        ler_registro(reg, 1, arq_entrada);
         
-        char removido = get_removido1(reg1);
+        char removido = get_removido(reg);
 
         if (removido == '1') {
-            destruir_registro1(reg1, 1);
+            destruir_registro(reg, 1);
 
             continue;
         }
@@ -273,6 +270,7 @@ void busca_parametrizada1(FILE *arq_entrada, string_t *nome_campos, string_t *va
         // Em seguida, para cada iteração, preciso descobrir qual o nome do campo, iterando sobre um vetor com todos os nomes dos campos
         // Após descobrir qual o nome do campo, verifico se o valor do campo do atual registro condiz com o valor do campo passado na entrada
         // Após as 'n' iterações, se todos os valores da entrada condizerem com o registro atual, então encontrado==n, e irei imprimir o registro atual
+
         short encontrado = 0;
         for (int j = 0; j < n; j++) {
             for (int k = 0; k < 7; k++) {
@@ -284,51 +282,57 @@ void busca_parametrizada1(FILE *arq_entrada, string_t *nome_campos, string_t *va
 
                     switch (k) {
                         case 0:
-                            encontrado += (get_id1(reg1) == num);
+                            encontrado += (get_id(reg) == num);
                             break;
                         case 1:
-                            encontrado += (get_ano1(reg1) == num);
+                            encontrado += (get_ano(reg) == num);
                             break;
                         case 2:
-                            encontrado += (get_qtt1(reg1) == num);
+                            encontrado += (get_qtt(reg) == num);
                             break;
                         case 3:
-                            encontrado += (compare_strings_case_sensitive(get_sigla1(reg1), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_sigla(reg), valor_campos[j]) == 0);
                             break;
                         case 4:
-                            encontrado += (compare_strings_case_sensitive(get_cidade1(reg1), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_cidade(reg), valor_campos[j]) == 0);
                             break;
                         case 5:
-                            encontrado += (compare_strings_case_sensitive(get_marca1(reg1), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_marca(reg), valor_campos[j]) == 0);
                             break;
                         case 6:
-                            print_string(get_modelo1(reg1));
-                            encontrado += (compare_strings_case_sensitive(get_modelo1(reg1), valor_campos[j]) == 0);
+                            print_string(get_modelo(reg));
+                            encontrado += (compare_strings_case_sensitive(get_modelo(reg), valor_campos[j]) == 0);
                             break;
                     }
                     break;
                 }
             }
         }
+
         if (encontrado == n) {
-            imprimir_reg1(reg1);
+            imprimir_registro(reg);
+            n_registros_encontrados++;
         }
 
-        destruir_registro1(reg1, 1);
+        destruir_registro(reg, 1);
+    }
+
+    if (n_registros_encontrados == 0) {
+        printf("Registro inexistente\n");
     }
 }
 
 
 void busca_parametrizada2(FILE *arq_entrada, string_t *nome_campos, string_t *valor_campos, int n) {
-    cabecalho2_t *c2 = criar_cabecalho2();
+    cabecalho_t *cabecalho = criar_cabecalho();
 
-    ler_cabecalho2_de_arquivo(c2, arq_entrada);
+    ler_cabecalho_de_arquivo(cabecalho, 2, arq_entrada);
 
-    long long int proxByteOffset = get_proxByteOffset2(c2);
+    long long int proxByteOffset = get_proxByteOffset(cabecalho);
     
-    char status = get_status2(c2);
+    char status = get_status(cabecalho);
 
-    destruir_cabecalho2(c2);
+    destruir_cabecalho(cabecalho);
 
     if (status == '0') {
         printf("Falha no processamento do arquivo.\n");
@@ -345,16 +349,17 @@ void busca_parametrizada2(FILE *arq_entrada, string_t *nome_campos, string_t *va
     long long int byteOffset_atual = TAM_CAB_2;
 
     string_t campos_validos[] = {"id", "ano", "qtt", "sigla", "cidade", "marca", "modelo"};
+    int n_registros_encontrados = 0;
     while (byteOffset_atual < proxByteOffset) {
-        registro2_t *reg2 = criar_registro2();
+        registro_t *reg = criar_registro();
 
-        int tam_reg = ler_registro2(reg2, arq_entrada);
+        int tam_reg = ler_registro(reg, 2, arq_entrada);
         byteOffset_atual += tam_reg;
 
-        char removido = get_removido2(reg2);
+        char removido = get_removido(reg);
 
         if (removido == '1') {
-            destruir_registro2(reg2, 1);
+            destruir_registro(reg, 1);
 
             continue;
         }
@@ -370,25 +375,25 @@ void busca_parametrizada2(FILE *arq_entrada, string_t *nome_campos, string_t *va
 
                     switch (k) {
                         case 0:
-                            encontrado += (get_id2(reg2) == num);
+                            encontrado += (get_id(reg) == num);
                             break;
                         case 1:
-                            encontrado += (get_ano2(reg2) == num);
+                            encontrado += (get_ano(reg) == num);
                             break;
                         case 2:
-                            encontrado += (get_qtt2(reg2) == num);
+                            encontrado += (get_qtt(reg) == num);
                             break;
                         case 3:
-                            encontrado += (compare_strings_case_sensitive(get_sigla2(reg2), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_sigla(reg), valor_campos[j]) == 0);
                             break;
                         case 4:
-                            encontrado += (compare_strings_case_sensitive(get_cidade2(reg2), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_cidade(reg), valor_campos[j]) == 0);
                             break;
                         case 5:
-                            encontrado += (compare_strings_case_sensitive(get_marca2(reg2), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_marca(reg), valor_campos[j]) == 0);
                             break;
                         case 6:
-                            encontrado += (compare_strings_case_sensitive(get_modelo2(reg2), valor_campos[j]) == 0);
+                            encontrado += (compare_strings_case_sensitive(get_modelo(reg), valor_campos[j]) == 0);
                             break;
                     }
                     break;
@@ -396,16 +401,25 @@ void busca_parametrizada2(FILE *arq_entrada, string_t *nome_campos, string_t *va
             }
         }
         if (encontrado == n) {
-            imprimir_reg2(reg2);
+            imprimir_registro(reg);
+            n_registros_encontrados++;
         }
 
-        destruir_registro2(reg2, 1);
+        destruir_registro(reg, 1);
+    }
+
+    if (n_registros_encontrados == 0) {
+        printf("Registro inexistente\n");
     }
 }
 
+void funcionalidade4(int tipo_de_arquivo, string_t binario_entrada, int RRN) {
+    if (tipo_de_arquivo != 1) {
+        printf("Falha no processamento do arquivo.\n");
 
+        return;
+    }
 
-void funcionalidade4(string_t tipo_de_arquivo, string_t binario_entrada, int RRN) {
     FILE *arq_entrada = NULL;
 
     arq_entrada = fopen(binario_entrada, "rb");
@@ -416,14 +430,14 @@ void funcionalidade4(string_t tipo_de_arquivo, string_t binario_entrada, int RRN
         return;
     }
 
-    cabecalho1_t *c1 = criar_cabecalho1();
+    cabecalho_t *cabecalho = criar_cabecalho();
 
-    ler_cabecalho1_de_arquivo(c1, arq_entrada);
+    ler_cabecalho_de_arquivo(cabecalho, 1, arq_entrada);
 
-    int proxRRN = get_proxRRN1(c1);
-    char status = get_status1(c1);
+    int proxRRN = get_proxRRN(cabecalho);
+    char status = get_status(cabecalho);
 
-    destruir_cabecalho1(c1);
+    destruir_cabecalho(cabecalho);
 
     if (status == '0') {
         printf("Falha no processamento do arquivo.\n");
@@ -445,16 +459,16 @@ void funcionalidade4(string_t tipo_de_arquivo, string_t binario_entrada, int RRN
 
     fseek(arq_entrada, byte_offset, SEEK_SET);
 
-    registro1_t *reg1 = criar_registro1();
+    registro_t *reg = criar_registro();
 
-    ler_registro1(reg1, arq_entrada);
+    ler_registro(reg, 1,arq_entrada);
 
-    char removido = get_removido1(reg1);
+    char removido = get_removido(reg);
 
     if (removido == '0') {
-        imprimir_reg1(reg1);
+        imprimir_registro(reg);
     }
 
-    destruir_registro1(reg1, 1);
+    destruir_registro(reg, 1);
     fclose(arq_entrada);
 }
