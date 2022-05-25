@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <vector>
 using namespace std;
 
 class Graph {
@@ -11,7 +11,7 @@ protected:
 public:
     Graph(int vertices) : vertices(vertices) {
         this->graph.resize(vertices);
-        for(int i = 0; i < vertices; i++) {
+        for (int i = 0; i < vertices; i++) {
             this->graph[i].resize(vertices);
         }
     }
@@ -43,25 +43,27 @@ public:
         }
         return os;
     }
-
 };
 
 class BFS {
 private:
-    int connected_paths;
     vector<bool> marked;
-    vector<int> edgeTo;
+    vector<int> distance;
 
 public:
     BFS(Graph g) {
         marked.resize(g.get_vertices(), false);
-        edgeTo.resize(g.get_vertices());
+        distance.resize(g.get_vertices(), -1);
     }
 
     void bfs(Graph g, int source) {
+        fill(marked.begin(), marked.end(), false);
+        fill(distance.begin(), distance.end(), -1);
+
         queue<int> q;
         q.push(source);
         marked[source] = true;
+        distance[source] = 0;
 
         while (!q.empty()) {
             int v = q.front();
@@ -70,35 +72,23 @@ public:
                 if (!marked[w]) {
                     q.push(w);
                     marked[w] = true;
-                    edgeTo[w] = v;
-                    connected_paths++;
+                    distance[w] = distance[v] + 1;
                 }
             }
         }
     }
 
-    void printDistance(Graph g, int source) {
-        fill(marked.begin(), marked.end(), false);
-        fill(edgeTo.begin(), edgeTo.end(), 0);
-        bfs(g, source);
-        
-        for (int i = 0; i < g.get_vertices(); i++) {
-            if (!marked[i]) continue;
+    void printDistance(Graph g) {
+        for (int j = 0; j < g.get_vertices(); j++) {
+            bfs(g, j);
 
-            int distance = (i == source ? 0 : 1);                
-            int stack = i;
-            while (i != source && edgeTo[stack] != source) {
-                stack = edgeTo[stack];
-                distance++;
+            for (int i = 0; i < g.get_vertices(); i++) {
+                cout << distance[i] << " ";
             }
-
-            cout << distance << " ";
-
+            cout << endl;
         }
-        cout << endl;
     }
 };
-
 
 int main() {
     string line;
@@ -106,17 +96,14 @@ int main() {
     int vertices = (line[10] - '0');
     scanf("%*[^\n]");
 
-
     Graph g(vertices);
     int x, y;
-    while(cin >> x >> y) {
+    while (cin >> x >> y) {
         g.add_edge(make_pair(x - 1, y - 1));
-    } 
+    }
 
     BFS bfs(g);
-    for (int i = 0; i < g.get_vertices(); i++) {
-        bfs.printDistance(g, i);
-    }
+    bfs.printDistance(g);
 
     return 0;
 }
