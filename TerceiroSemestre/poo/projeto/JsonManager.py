@@ -1,36 +1,11 @@
+'''
+A classe JsonManager serve para leitura do banco de cartas
+em um arquivo JSON e instanciar cada carta em um objeto da classe Card
+'''
+
+
 import json
-
-class Card(object):
-
-    def __init__(self,nome = None, img_src = None, atributos = None):
-
-        self.__name : str = nome
-        self.__img_src: str = img_src
-        self.__attributes: dict = atributos
-
-    @property
-    def name(self):
-        return self.__name
-
-    @name.setter
-    def name(self, nome):
-        self.__name = nome
-
-    @property
-    def img_src(self):
-        return self.__img_src
-    
-    @img_src.setter
-    def img_src(self, img_src):
-        self.__img_src = img_src
-
-    @property
-    def attributes(self):
-        return self.__attributes
-
-    @attributes.setter
-    def attributes(self, atributos):
-        self.__attributes = atributos
+import Card
 
 class JsonManager(object):
 
@@ -41,27 +16,22 @@ class JsonManager(object):
     def filename(self):
         return self.__filename
 
-    @filename.setter
-    def filename(self, filename):
-        self.__filename = filename
-
-
-    def all_Cards(self):
+    def all_cards(self):
 
         with open(self.__filename, encoding='utf-8') as arq_json:
             data = json.load(arq_json)
 
-        all_cards :list[Card] = []
+        all_cards: list[Card] = []
 
-        for i in data['cartas']:
-            atr = {
-            'nascimento':i['nascimento'],
-            'votos':     i['votos'],
-            'cargo':     i['cargo'],
-            'carreira':  i['carreira'],
-            'filiados':  i['filiados']
+        for card_dict in data['cartas']:
+            selected_attributes = {
+                1: card_dict['votos'],
+                2: card_dict['carreira'],
+                3: card_dict['cargo'],
+                4: card_dict['nascimento'],
+                5: card_dict['filiados']
             }
-            all_cards.append(Card(i['nome'], i['imagem'], atr))
+            all_cards.append(Card.Card(card_dict['nome'], card_dict['imagem'], selected_attributes))
 
         return all_cards
 

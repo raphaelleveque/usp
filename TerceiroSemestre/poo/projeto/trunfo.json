@@ -1,0 +1,291 @@
+{
+  "cartas": [
+    {
+      "nome": "Aecio Neves",
+      "imagem": "aecio.png",
+      "nascimento": 1960,
+      "votos": 51041155,
+      "cargo": "Senador",
+      "carreira": 1987,
+      "filiados": 1352906,
+      "frase": "Sim, isso é talco, como descobriu?",
+      "partido": "PSDB"
+    },
+
+    {
+      "nome": "Joao Amoedo",
+      "imagem": "amoedo.png",
+      "nascimento": 1962,
+      "votos": 2679744,
+      "cargo": "Sem Cargo",
+      "carreira": 2018,
+      "filiados": 30973,
+      "frase": "Os pobres precisam ficar ricos",
+      "partido": "NOVO"
+    },
+
+    {
+      "nome": "Jair Bolsonaro",
+      "imagem": "bolsonaro.png",
+      "nascimento": 1955,
+      "votos": 57797847,
+      "cargo": "Presidente",
+      "carreira": 1989,
+      "filiados": 770662,
+      "frase": "Usava para comer gente",
+      "partido": "PL"
+    },
+
+    {
+      "nome": "Guilherme Boulos",
+      "imagem": "Boulos.png",
+      "nascimento": 1982,
+      "votos": 2168109,
+      "cargo": "Sem Cargo",
+      "carreira": 2018,
+      "filiados": 222951,
+      "frase": "Tem razão social?",
+      "partido": "PSOL"
+    },
+
+    {
+      "nome": "Ciro Gomes",
+      "imagem": "ciro.png",
+      "nascimento": 1957,
+      "votos": 13344366,
+      "cargo": "Governador",
+      "carreira": 1983,
+      "filiados": 1152760,
+      "frase": "Eu vou tirar o nome dos brasileiros do SPC!",
+      "partido": "PDT"
+    },
+
+    {
+      "nome": "Fernando Collor",
+      "imagem": "collor.png",
+      "nascimento": 1948,
+      "votos": 20611011,
+      "cargo": "Presidente",
+      "carreira": 1979,
+      "filiados": 1079471,
+      "frase": "Ninguém toca na poupança!",
+      "partido": "PTB"
+    },
+
+    {
+      "nome": "Eduardo Cunha",
+      "imagem": "cunha.png",
+      "nascimento": 1958,
+      "votos": 101495,
+      "cargo": "Deputado Federal",
+      "carreira": 2001,
+      "filiados": 1079471,
+      "frase": "Que Deus tenha misericórdia dessa nação",
+      "partido": "PTB"
+    },
+
+    {
+      "nome": "Cabo Daciolo",
+      "imagem": "daciolo.png",
+      "nascimento": 1973,
+      "votos": 1348323,
+      "cargo": "Deputado Federal",
+      "carreira": 2014,
+      "filiados": 1152760,
+      "frase": "Foi culpa da URSAL!",
+      "partido": "PDT"
+    },
+
+    {
+      "nome": "Dilma",
+      "imagem": "dilma.png",
+      "nascimento": 1947,
+      "votos": 54501118,
+      "cargo": "Presidente",
+      "carreira": 1986,
+      "filiados": 1631643,
+      "frase": "Precisamos estocar vento",
+      "partido": "PT"
+    },
+
+    {
+      "nome": "Joao Doria",
+      "imagem": "doria.png",
+      "nascimento": 1957,
+      "votos": 10990350,
+      "cargo": "Governador",
+      "carreira": 2017,
+      "filiados": 1352906,
+      "frase": "Joãozinho trabalhador contra muros pichados",
+      "partido": "PSDB"
+    },
+
+    {
+      "nome": "Eneas Carneiro",
+      "imagem": "eneas.png",
+      "nascimento": 1938,
+      "votos": 4603876,
+      "cargo": "Deputado Federal",
+      "carreira": 2003,
+      "filiados": 0,
+      "frase": "Eu sou o Eneas",
+      "partido": "PR"
+    },
+
+    {
+      "nome": "Alexandre Frota",
+      "imagem": "frota.png",
+      "nascimento": 1963,
+      "votos": 151098,
+      "cargo": "Deputado Federal",
+      "carreira": 2018,
+      "filiados": 1352906,
+      "frase": "O negocio é comer bolo e biscoito",
+      "partido": "PSDB"
+    },
+
+    {
+      "nome": "Gabriel Monteiro",
+      "imagem": "gabriel.png",
+      "nascimento": 1994,
+      "votos": 60326,
+      "cargo": "Vereador",
+      "carreira": 2020,
+      "filiados": 770662,
+      "frase": "Gabriel Monteiro queria saber se você está solteiro",
+      "partido": "PL"
+    },
+
+    {
+      "nome": "Japones da Federal",
+      "imagem": "japones.png",
+      "nascimento": 1955,
+      "votos": 0,
+      "cargo": "Policia Federal",
+      "carreira": 1981,
+      "filiados": 0,
+      "frase": "ぁあぃいぅうぇえぉ",
+      "partido": "Sem Partido"
+    },
+
+    {
+      "nome": "Jean Wyllys",
+      "imagem": "jean.png",
+      "nascimento": 1974,
+      "votos": 144770,
+      "cargo": "Deputado Federal",
+      "carreira": 2010,
+      "filiados": 1631643,
+      "frase": "Se vinher eu cuspo",
+      "partido": "PT"
+    },
+
+    {
+      "nome": "Kim Kataguire",
+      "imagem": "kim.png",
+      "nascimento": 1996,
+      "votos": 465310,
+      "cargo": "Deputado Federal",
+      "carreira": 2018,
+      "filiados": 1083183,
+      "frase": "Vou jogar Dota mais tarde",
+      "partido": "UNIAO"
+    },
+
+    {
+      "nome": "Levy Fidelix",
+      "imagem": "levi.png",
+      "nascimento": 1951,
+      "votos": 446878,
+      "cargo": "Sem Cargo",
+      "carreira": 1996,
+      "filiados": 147244,
+      "frase": "Orgão excretor não reproduz",
+      "partido": "PRTB"
+    },
+
+    {
+      "nome": "Luiz Inacio Lula da Silva",
+      "imagem": "lula.png",
+      "nascimento": 1945,
+      "votos": 58295042,
+      "cargo": "Presidente",
+      "carreira": 1989,
+      "filiados": 1631643,
+      "frase": "Meu companheiro",
+      "partido": "PT"
+    },
+
+    {
+      "nome": "Mamae Falei ",
+      "imagem": "mamaefalei.png",
+      "nascimento": 1986,
+      "votos": 478280,
+      "cargo": "Deputado Estadual",
+      "carreira": 2018,
+      "filiados": 1083183,
+      "frase": "Elas são fáceis porque são pobres",
+      "partido": "UNIAO"
+    },
+
+    {
+      "nome": "Marina Silva",
+      "imagem": "marina.png",
+      "nascimento": 1958,
+      "votos": 19332876,
+      "cargo": "Senador",
+      "carreira": 1989,
+      "filiados": 36490,
+      "frase": "Ja peguei Malária 27 vezes",
+      "partido": "REDE"
+    },
+
+    {
+      "nome": "Henrique Meireles",
+      "imagem": "meireles.png",
+      "nascimento": 1945,
+      "votos": 1288948,
+      "cargo": "Ministro",
+      "carreira": 2002,
+      "filiados": 1083183,
+      "frase": "Chama o Meireles",
+      "partido": "UNIAO"
+    },
+
+    {
+      "nome": "Eduardo Suplicy",
+      "imagem": "suplicy.png",
+      "nascimento": 1941,
+      "votos": 8096803,
+      "cargo": "Senador",
+      "carreira": 1979,
+      "filiados": 1631643,
+      "frase": "Super fã de Racionais",
+      "partido": "PT"
+    },
+
+    {
+      "nome": "Michel Temer",
+      "imagem": "temer.png",
+      "nascimento": 1940,
+      "votos": 54532654,
+      "cargo": "Presidente",
+      "carreira": 1987,
+      "filiados": 2131547,
+      "frase": "Sim, sou o melhor presidente da historia",
+      "partido": "MDB"
+    },
+
+    {
+      "nome": "Tiririca",
+      "imagem": "tiririca.png",
+      "nascimento": 1965,
+      "votos": 1537642,
+      "cargo": "Deputado Federal",
+      "carreira": 2010,
+      "filiados": 770662,
+      "frase": "Pior que tá nao fica (e ficou)",
+      "partido": "PL"
+    }
+  ]
+}

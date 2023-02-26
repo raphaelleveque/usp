@@ -1,0 +1,267 @@
+<MainWindow>
+    GridLayout:
+        id: grid
+        cols: 1
+        size: root.width, root.height
+        pos: 0, 0
+
+        GridLayout:
+            id: top_outter_grid
+            rows: 1
+            size_hint_y: 1
+            background_color: 0, 0, 0, 1
+            canvas.before:
+                Color:
+                    rgb: 0, 39, 118
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                id: cards_left_player_label
+                bold: True
+                text: "Cartas restantes para o jogador: " + str(root.n_cards//2)
+                text_size: self.width, None
+                halign: 'left'
+                padding_x: 10
+            Label:
+                id: cards_left_opponent_label
+                bold: True
+                text: "Cartas restantes para o oponente: " + str(root.n_cards//2)
+                text_size: self.width, None
+                halign: 'right'
+                padding_x: 10
+
+        GridLayout:
+            id: bottom_outter_grid
+            cols: 1
+            size_hint_y: 10
+
+            GridLayout:
+                id: top_inner_grid
+                rows: 1
+                GridLayout:
+                    id: top_left_grid
+                    cols: 1
+                    size_hint_x: 6
+                    opacity: 0
+                    Label:
+                        id: opponent_attributes_label_0
+                        bold: True
+                        # opacity: 0
+                        text: "Atributos da carta do oponente:"
+                    Label:
+                        id: opponent_attributes_label_1
+                        bold: True
+                        # opacity: 0
+                        text: "Número de votos: 133.032"
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: opponent_attributes_label_2
+                        bold: True
+                        # opacity: 0
+                        text: "Ano de início da carreira: 1998"
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: opponent_attributes_label_3
+                        bold: True
+                        # opacity: 0
+                        text: "Cargo mais alto alcançado: Vice-presidente"
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: opponent_attributes_label_4
+                        bold: True
+                        # opacity: 0
+                        text: "Ano de nascimento: 1976"
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: opponent_attributes_label_5
+                        bold: True
+                        # opacity: 0
+                        text: "Partidos a que já foi filiado: 2"
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+
+                GridLayout:
+                    id: top_center_grid
+                    cols: 1
+                    size_hint_x: 3
+                    GridLayout:
+                        id: top_center_label_grid
+                        cols: 1
+                        size_hint_y: 1
+                        Label:
+                            id: opponent_card_name_label
+                            bold: True
+                            text_size: self.width, None
+                            halign: 'center'
+                            text: "Carta do oponente: ?"
+
+                    GridLayout:
+                        id: image_grid
+                        rows: 1
+                        size_hint_y: 9
+                        padding: 10
+                        Image:
+                            id: opponent_card_image
+                            opacity: 1
+                            source: "unknown_card.png"
+
+                GridLayout:
+                    id: top_right_grid
+                    cols: 1
+                    size_hint_x: 6
+                    Label:
+                        id: winner_name_label
+                        bold: True
+                        opacity: 0
+                        text: "VOCÊ VENCEU"
+                        # font size
+                    Label:
+                        id: winner_desc_label
+                        bold: True
+                        opacity: 0
+                        text: 'O valor do atributo <attribute_name> é maior na sua carta.'
+                        text_size: self.width, None
+                        padding_x: 20
+                        # font size
+                    Button:
+                        id: next_round_button
+                        opacity: 0
+                        text: "Próxima rodada"
+                        on_press: root.next_round()
+                        disabled: True
+
+            Widget:
+                id: horizontal_separator
+                size_hint_y: None
+                height: 6
+                canvas:
+                    Color:
+                        rgb: 0, 39, 118
+                    Rectangle:
+                        pos: 0, horizontal_separator.center_y
+                        size: horizontal_separator.width, 2
+
+            GridLayout:
+                id: bottom_inner_grid
+                rows: 1
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 5
+                    GridLayout:
+                        cols: 1
+                        size_hint_y: 2
+                        Label:
+                            id: player_card_name_label
+                            text_size: self.width, None
+                            halign: 'center'
+                            bold: True
+                            text: root.get_player_card_name()
+                    GridLayout:
+                        cols: 1
+                        size_hint_y: 8
+                        padding: 10
+                        Image:
+                            id: player_card_image
+                            source: root.player_card_img_source
+
+                Widget:
+                    id: vertical_separator
+                    size_hint_x: None
+                    width: 2
+                    canvas:
+                        Color:
+                            rgb: 0, 39, 118
+                        Rectangle:
+                            pos: vertical_separator.center_x, 0
+                            size: 2, vertical_separator.height
+
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 4
+                    Label:
+                        bold: True
+                        text: "Selecione um atributo:"
+                    Button:
+                        id: select_btn1
+                        text: "Número de votos"
+                        on_release: root.select(1)
+                    Button:
+                        id: select_btn2
+                        text: "Início da carreira"
+                        on_release: root.select(2)
+                    Button:
+                        id: select_btn3
+                        text: "Cargo mais alto"
+                        on_release: root.select(3)
+                    Button:
+                        id: select_btn4
+                        text: "Ano de nascimento"
+                        on_release: root.select(4)
+                    Button:
+                        id: select_btn5
+                        text: "Número de partidos"
+                        on_release: root.select(5)
+
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 9
+                    padding: 0
+                    Label:
+                        id: player_attributes_label_0
+                        bold: True
+                        text: "Valor dos atributos da sua carta:"
+                    Label:
+                        id: player_attributes_label_1
+                        bold: True
+                        text: root.get_player_att(1)
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: player_attributes_label_2
+                        bold: True
+                        text: root.get_player_att(2)
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: player_attributes_label_3
+                        bold: True
+                        text: root.get_player_att(3)
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: player_attributes_label_4
+                        bold: True
+                        text: root.get_player_att(4)
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'
+                    Label:
+                        id: player_attributes_label_5
+                        bold: True
+                        text: root.get_player_att(5)
+                        text_size: self.width, None
+                        padding_x: 20
+                        halign: 'left'
+                        valign: 'middle'

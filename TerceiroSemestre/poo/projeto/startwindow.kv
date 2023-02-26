@@ -1,0 +1,30 @@
+<StartWindow>
+    GridLayout:
+        cols: 1
+        size: root.width - 20, root.height - 20
+        pos: 10, 10
+        background_color: root.background_color
+        GridLayout:
+            id: top_grid
+            cols: 1
+            GridLayout:
+                cols: 1
+                size_hint_y: 4
+                Image:
+                    source: "logo.png"
+            GridLayout:
+                rows: 1
+                size_hint_y: 3
+                padding: 10
+                Button:
+                    text: 'JOGAR'
+                    font_size: 45
+                    bold: True
+                    on_press: app.stop(), root.start_game()
+                    background_color: root.button_color
+                Button:
+                    text: 'INSTRUÇÕES'
+                    font_size: 45
+                    bold: True
+                    on_press: root.show_instructions()
+                    background_color: root.button_color
