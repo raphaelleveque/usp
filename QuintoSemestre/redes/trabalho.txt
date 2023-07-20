@@ -1,0 +1,8 @@
+Trabalho de Redes
+Grupo: 
+João Pedro Duarte Nunes 12542460
+Raphael David Philippe Leveque 12542522
+Thais Ribeiro Lauriano 12542518
+
+Link do Github: https://github.com/raphaelleveque/trabalho-redes
+O vídeo de apresentação está no README do github
