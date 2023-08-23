@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/01/buildStairs.cpp
+bits/stdc++.h
+-
+
