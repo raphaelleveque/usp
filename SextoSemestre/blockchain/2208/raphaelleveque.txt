@@ -1,0 +1,26 @@
+Raphael David Philippe Leveque 12542522
+
+1)Escreva um pseudo-código da mineração do blockchain para hashes começando com quatro zeros
+função minerarBloco(transaçõesAnteriores, novoBlocoDesejado, dificuldade):
+    prefixoDesejado = "0000"  // Quatro zeros iniciais
+    number_used_once = 0
+    enquanto True:
+        concatenar transaçõesAnteriores, novoBlocoDesejado e number_used_once
+        calcular hash da concatenação
+        se primeiros caracteres do hash forem iguais a prefixoDesejado:
+            retornar number_used_once e hash
+        senão:
+            incrementar number_used_once
+
+2)Explique o porquê do Proof of Work do Bitcoin ser difícil de minerar, porém de ser fácil para verificar
+O minerador precisa encontrar o hash vencedor para o bloco, e isso é força bruta. Entretanto, após encontrá-lo, para verificar se o hash está correto, isso leva um tempo constante, pois é apenas uma comparação.
+
+3)Cite o que um mecanismo presente em um sistema decentralizado que não é encontrado em um ambiente distribuído
+Um mecanismo de consenso baseado em algoritmos de mineração, como o Proof of Work, é frequentemente encontrado em sistemas descentralizados, como blockchain, para garantir a segurança e evitar gastos duplicados. Esse mecanismo não é tão comum em ambientes distribuídos, onde a colaboração entre entidades é o foco principal.
+
+
+4)Descreva um sistema para meio-ambiente que requeira o uso da blockchain e mostre como ela é atende os requisitos citados
+Um sistema de rastreamento de cadeia de fornecimento de alimentos, usando blockchain, que permite registrar cada etapa do processo, desde a produção até o consumo.
+
+5)Cite duas desvantagens presentes em um sistema baseado na blockchain
+O alto consumo energético e ataques de 51%.
