@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/02/hammingdistance.cpp
+bits/stdc++.h
+-
+
