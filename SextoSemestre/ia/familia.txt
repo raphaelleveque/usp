@@ -1,0 +1,29 @@
+% Fatos da família
+feminino(gabriela).
+feminino(juliana).
+masculino(gerald).
+masculino(antonio).
+pai(gerald, gabriela).
+mae(juliana, gabriela).
+irmao(gabriela, antonio).
+tio(antonio, parte_mae).
+
+% Regras para determinar os relacionamentos
+irmao_ou_irma(X, Y) :- irmao(X, Y); irmao(Y, X).
+tio_ou_tia(X, Y) :- tio(X, Y); tia(X, Y).
+tia(X, Y) :- feminino(X), irmao_ou_irma(X, Z), mae(Z, Y).
+avo(X, Y) :- pai(X, Z), pai(Z, Y); pai(X, Z), mae(Z, Y); mae(X, Z), pai(Z, Y); mae(X, Z), mae(Z, Y).
+
+% Consultas
+% Quem são os irmãos de Gabriela?
+% Resposta esperada: antonio
+?- irmao_ou_irma(gabriela, X), X \= gabriela.
+
+% Quem são os tios ou tias de Gabriela?
+% Resposta esperada: antonio
+?- tio_ou_tia(X, gabriela).
+
+% Quem são os avós de Gabriela?
+% Resposta esperada: gerald, juliana
+?- avo(X, gabriela).
+

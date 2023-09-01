@@ -1,0 +1,1 @@
+/opt/homebrew/bin/g++-13 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.2 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/03.dir/IRR.cpp.o -o 03 
