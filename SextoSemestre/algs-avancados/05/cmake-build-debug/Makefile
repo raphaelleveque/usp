@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03
+CMAKE_SOURCE_DIR = /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/cmake-build-debug/CMakeFiles /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named 03
+# Target rules for targets named 05
 
 # Build rule for target.
-03: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 03
-.PHONY : 03
+05: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 05
+.PHONY : 05
 
 # fast build rule for target.
-03/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/03.dir/build.make CMakeFiles/03.dir/build
-.PHONY : 03/fast
+05/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/05.dir/build.make CMakeFiles/05.dir/build
+.PHONY : 05/fast
 
-exactsum.o: exactsum.cpp.o
-.PHONY : exactsum.o
+RemovingDigits.o: RemovingDigits.cpp.o
+.PHONY : RemovingDigits.o
 
 # target to build an object file
-exactsum.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/03.dir/build.make CMakeFiles/03.dir/exactsum.cpp.o
-.PHONY : exactsum.cpp.o
+RemovingDigits.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/05.dir/build.make CMakeFiles/05.dir/RemovingDigits.cpp.o
+.PHONY : RemovingDigits.cpp.o
 
-exactsum.i: exactsum.cpp.i
-.PHONY : exactsum.i
+RemovingDigits.i: RemovingDigits.cpp.i
+.PHONY : RemovingDigits.i
 
 # target to preprocess a source file
-exactsum.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/03.dir/build.make CMakeFiles/03.dir/exactsum.cpp.i
-.PHONY : exactsum.cpp.i
+RemovingDigits.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/05.dir/build.make CMakeFiles/05.dir/RemovingDigits.cpp.i
+.PHONY : RemovingDigits.cpp.i
 
-exactsum.s: exactsum.cpp.s
-.PHONY : exactsum.s
+RemovingDigits.s: RemovingDigits.cpp.s
+.PHONY : RemovingDigits.s
 
 # target to generate assembly for a file
-exactsum.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/03.dir/build.make CMakeFiles/03.dir/exactsum.cpp.s
-.PHONY : exactsum.cpp.s
+RemovingDigits.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/05.dir/build.make CMakeFiles/05.dir/RemovingDigits.cpp.s
+.PHONY : RemovingDigits.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... 03"
-	@echo "... exactsum.o"
-	@echo "... exactsum.i"
-	@echo "... exactsum.s"
+	@echo "... 05"
+	@echo "... RemovingDigits.o"
+	@echo "... RemovingDigits.i"
+	@echo "... RemovingDigits.s"
 .PHONY : help
 
 

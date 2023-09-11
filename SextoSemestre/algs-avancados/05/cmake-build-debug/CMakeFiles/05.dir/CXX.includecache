@@ -6,11 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp
-iostream
--
-algorithm
--
-vector
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/RemovingDigits.cpp
+bits/stdc++.h
 -
 

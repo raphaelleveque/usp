@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/IRR.cpp">
+		<Unit filename="/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp">
 			<Option target="03"/>
 		</Unit>
 		<Unit filename="/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/CMakeLists.txt">

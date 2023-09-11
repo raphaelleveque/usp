@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp" "/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles/03.dir/exactsum.cpp.o"
+  "/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/RemovingDigits.cpp" "/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/05/cmake-build-debug/CMakeFiles/05.dir/RemovingDigits.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

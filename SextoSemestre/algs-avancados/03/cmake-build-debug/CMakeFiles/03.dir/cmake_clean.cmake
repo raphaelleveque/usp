@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "03"
   "03.pdb"
-  "CMakeFiles/03.dir/IRR.cpp.o"
+  "CMakeFiles/03.dir/exactsum.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

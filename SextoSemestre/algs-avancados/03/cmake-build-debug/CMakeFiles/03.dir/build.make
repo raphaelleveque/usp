@@ -66,27 +66,27 @@ include CMakeFiles/03.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/03.dir/flags.make
 
-CMakeFiles/03.dir/IRR.cpp.o: CMakeFiles/03.dir/flags.make
-CMakeFiles/03.dir/IRR.cpp.o: ../IRR.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/03.dir/IRR.cpp.o"
-	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/03.dir/IRR.cpp.o -c /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/IRR.cpp
+CMakeFiles/03.dir/exactsum.cpp.o: CMakeFiles/03.dir/flags.make
+CMakeFiles/03.dir/exactsum.cpp.o: ../exactsum.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/03.dir/exactsum.cpp.o"
+	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/03.dir/exactsum.cpp.o -c /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp
 
-CMakeFiles/03.dir/IRR.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/03.dir/IRR.cpp.i"
-	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/IRR.cpp > CMakeFiles/03.dir/IRR.cpp.i
+CMakeFiles/03.dir/exactsum.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/03.dir/exactsum.cpp.i"
+	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp > CMakeFiles/03.dir/exactsum.cpp.i
 
-CMakeFiles/03.dir/IRR.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/03.dir/IRR.cpp.s"
-	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/IRR.cpp -o CMakeFiles/03.dir/IRR.cpp.s
+CMakeFiles/03.dir/exactsum.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/03.dir/exactsum.cpp.s"
+	/opt/homebrew/bin/g++-13 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/exactsum.cpp -o CMakeFiles/03.dir/exactsum.cpp.s
 
 # Object files for target 03
 03_OBJECTS = \
-"CMakeFiles/03.dir/IRR.cpp.o"
+"CMakeFiles/03.dir/exactsum.cpp.o"
 
 # External object files for target 03
 03_EXTERNAL_OBJECTS =
 
-03: CMakeFiles/03.dir/IRR.cpp.o
+03: CMakeFiles/03.dir/exactsum.cpp.o
 03: CMakeFiles/03.dir/build.make
 03: CMakeFiles/03.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/algs-avancados/03/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable 03"
