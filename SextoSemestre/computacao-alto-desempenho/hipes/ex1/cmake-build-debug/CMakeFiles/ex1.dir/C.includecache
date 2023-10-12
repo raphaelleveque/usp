@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/computacao-alto-desempenho/hipes/ex1/main.c
+stdio.h
+-
+omp.h
+-
+

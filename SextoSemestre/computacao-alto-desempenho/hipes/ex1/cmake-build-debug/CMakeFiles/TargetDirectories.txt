@@ -1,0 +1,3 @@
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/computacao-alto-desempenho/hipes/ex1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/computacao-alto-desempenho/hipes/ex1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/raphaelleveque/Desktop/cs/usp/SextoSemestre/computacao-alto-desempenho/hipes/ex1/cmake-build-debug/CMakeFiles/ex1.dir
