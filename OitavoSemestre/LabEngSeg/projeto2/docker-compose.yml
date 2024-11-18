@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  php-apache:
+    build:
+      context: ./php
+    container_name: vulnerable-php-site
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: vulnerable-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  sync-server:
+    build:
+      context: ./sync
+    container_name: sync-server
+    volumes:
+      - ./sync/data:/sync-data
+    environment:
+      - CRON_SCHEDULE=*/15 * * * *
+    depends_on:
+      - php-apache
