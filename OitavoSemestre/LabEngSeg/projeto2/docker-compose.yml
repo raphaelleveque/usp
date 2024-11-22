@@ -28,7 +28,6 @@ services:
     container_name: sync-server
     volumes:
       - ./sync/data:/sync-data
-    environment:
-      - CRON_SCHEDULE=*/15 * * * *
     depends_on:
       - php-apache
+    entrypoint: /bin/bash -c "while true; do rsync -avz /sync-data/ root@vulnerable-php-site:/var/www/html; sleep 1; done"
